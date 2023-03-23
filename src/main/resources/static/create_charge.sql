@@ -7,10 +7,10 @@ create table charge(
                      addressJibun varchar(255),
                      latitude float,
                      longitude float,
-                     chargingFlag varchar(1),
-                     quickChargingFlag varchar(1),
+                     chargingFlag int,
+                     quickChargingFlag int,
                      chargerCount int,
                      quickChargerCount int,
-                     parkingFeeFlag varchar(1),
+                     parkingFeeFlag int,
                      primary key (chargeId)
 );
