@@ -1,15 +1,29 @@
-package com.example.CrtDgn.Demain;
+package com.example.CrtDgn.domain.member;
 
 import jakarta.persistence.*;
+import lombok.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "member")
+@Getter
+@Setter
 @Entity
+@Builder
 public class Member {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "username")
     private String name;
+
+    @Column(name = "email")
     private String email;
-    private String pw;
+
+    @Column(name = "password")
+    private String password;
 
 
     public Long getId() {
@@ -36,10 +50,10 @@ public class Member {
     }
 
     public String getPw() {
-        return pw;
+        return password;
     }
 
     public void setPw(String pw) {
-        this.pw = pw;
+        this.password = password;
     }
 }
