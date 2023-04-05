@@ -16,9 +16,6 @@ public class Member {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
-    private String name;
-
     @Column(name = "email")
     private String email;
 
@@ -34,13 +31,6 @@ public class Member {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
     public String getEmail() {
         return email;
     }
