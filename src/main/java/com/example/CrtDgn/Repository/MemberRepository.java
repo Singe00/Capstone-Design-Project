@@ -1,6 +1,6 @@
 package com.example.CrtDgn.Repository;
 
-import com.example.CrtDgn.domain.member.Member;
+import com.example.CrtDgn.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

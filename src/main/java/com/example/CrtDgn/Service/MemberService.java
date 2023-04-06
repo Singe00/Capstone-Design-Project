@@ -2,7 +2,7 @@ package com.example.CrtDgn.Service;
 
 import com.example.CrtDgn.Dto.MemberDto;
 import com.example.CrtDgn.Repository.MemberRepository;
-import com.example.CrtDgn.domain.member.Member;
+import com.example.CrtDgn.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
