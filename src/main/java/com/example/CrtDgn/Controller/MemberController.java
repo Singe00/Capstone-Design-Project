@@ -1,27 +1,39 @@
 package com.example.CrtDgn.Controller;
 
+import com.example.CrtDgn.Dto.MemberDto;
+import com.example.CrtDgn.Service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
 public class MemberController {
-    @RequestMapping(value = "/",method = RequestMethod.GET)
-    public String index() {
-        log.info("home controller");
-        return "APIExamNaverLogin";
+    @Autowired
+    private final MemberService memberService;
+
+    @PostMapping("/signUp")
+    @ResponseBody
+    public boolean signup(@RequestBody MemberDto request) {
+        log.info("userEmail = {}, password = {}", request.getEmail(), request.getPassword());
+        if(memberService.signup(request).equals("Success")) {
+            return true;
+        }
+        return false;
     }
 
-    @RequestMapping(value = "login/aouth2/code/naver",method = RequestMethod.GET)
-    public String loginPOSTNaver(HttpSession session) {
-        log.info("Callback Controller");
-        return "callback";
+    @PostMapping("/login")
+    @ResponseBody
+    public boolean login(@RequestBody MemberDto request) {
+        log.info("userEmail = {}, password = {}", request.getEmail(), request.getPassword());
+        if (memberService.login(request).equals("Success")){
+            return true;
+        }
+        return false;
     }
+
 }

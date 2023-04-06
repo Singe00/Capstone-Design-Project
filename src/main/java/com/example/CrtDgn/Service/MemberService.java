@@ -28,7 +28,6 @@ public class MemberService {
         if (request.getPassword().equals(request.getCheckPassword()))
         {
             member.setId(null);
-            member.setName(request.getName());
             member.setEmail(request.getEmail());
             member.setPassword(request.getPassword());
 
