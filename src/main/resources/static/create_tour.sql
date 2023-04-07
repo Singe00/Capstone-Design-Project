@@ -12,3 +12,4 @@ create table tour(
                      imagepath varchar(255),
                      primary key (tourId)
 );
+

@@ -6,3 +6,5 @@ create table member(
                      password varchar(32),
                      primary key (id)
 );
+
+

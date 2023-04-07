@@ -1,4 +1,4 @@
-package com.example.CrtDgn.domain;
+package com.example.CrtDgn.Login.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

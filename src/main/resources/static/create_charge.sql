@@ -14,3 +14,5 @@ create table charge(
                      parkingFeeFlag int,
                      primary key (chargeId)
 );
+
+

@@ -1,8 +1,7 @@
-package com.example.CrtDgn.Controller;
+package com.example.CrtDgn.Login.Controller;
 
-import com.example.CrtDgn.Dto.MemberDto;
-import com.example.CrtDgn.Service.MemberService;
-import jakarta.servlet.http.HttpSession;
+import com.example.CrtDgn.Login.Dto.MemberDto;
+import com.example.CrtDgn.Login.Service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class MemberController {
     @PostMapping("/signUp")
     @ResponseBody
     public boolean signup(@RequestBody MemberDto request) {
-        log.info("userEmail = {}, password = {}", request.getEmail(), request.getPassword());
+        log.info("userEmail = {}, password = {},passwordCheck = {}", request.getEmail(), request.getPassword(),request.getCheckPassword());
         if(memberService.signup(request).equals("Success")) {
             return true;
         }

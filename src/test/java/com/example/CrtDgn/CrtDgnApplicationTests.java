@@ -1,7 +1,7 @@
 package com.example.CrtDgn;
 
-import com.example.CrtDgn.Dto.MemberDto;
-import com.example.CrtDgn.Service.MemberService;
+import com.example.CrtDgn.Login.Dto.MemberDto;
+import com.example.CrtDgn.Login.Service.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +17,7 @@ class CrtDgnApplicationTests {
 	void signup() {
 		MemberDto request1 = new MemberDto();
 
-		request1.setName("asdasdsa");
-		request1.setEmail("idid");
+		request1.setEmail("idid44");
 		request1.setPassword("asdasd");
 		request1.setCheckPassword("asdasd");
 

@@ -1,6 +1,6 @@
-package com.example.CrtDgn.Repository;
+package com.example.CrtDgn.Login.Repository;
 
-import com.example.CrtDgn.domain.Member;
+import com.example.CrtDgn.Login.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member,Long> {
     Optional<Member> findByEmail(String email);
-    Optional<Member> findByName(String name);
+    boolean existsByEmail(String email);
 }

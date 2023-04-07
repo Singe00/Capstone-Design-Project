@@ -1,13 +1,14 @@
-package com.example.CrtDgn.Service;
+package com.example.CrtDgn.Login.Service;
 
-import com.example.CrtDgn.Dto.MemberDto;
-import com.example.CrtDgn.Repository.MemberRepository;
-import com.example.CrtDgn.domain.Member;
+import com.example.CrtDgn.Login.Dto.MemberDto;
+import com.example.CrtDgn.Login.domain.Member;
+import com.example.CrtDgn.Login.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -56,4 +57,5 @@ public class MemberService {
             return "존재하지 않는 아이디입니다.";
         }
     }
+
 }
