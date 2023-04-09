@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -27,12 +30,12 @@ public class MemberController {
 
     @PostMapping("/login")
     @ResponseBody
-    public boolean login(@RequestBody MemberDto request) {
+    public boolean login(@RequestBody MemberDto request, HttpSession session) {
         log.info("userEmail = {}, password = {}", request.getEmail(), request.getPassword());
         if (memberService.login(request).equals("Success")){
+            log.info("email={}",request.getEmail());
             return true;
         }
         return false;
     }
-
 }

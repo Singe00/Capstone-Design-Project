@@ -1,7 +1,8 @@
 package com.example.CrtDgn.Login.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor

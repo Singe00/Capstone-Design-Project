@@ -17,7 +17,7 @@ class CrtDgnApplicationTests {
 	void signup() {
 		MemberDto request1 = new MemberDto();
 
-		request1.setEmail("idid44");
+		request1.setEmail("testqefe");
 		request1.setPassword("asdasd");
 		request1.setCheckPassword("asdasd");
 
