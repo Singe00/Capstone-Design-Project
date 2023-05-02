@@ -1,7 +1,7 @@
 package com.example.CrtDgn.Login.Service;
 
 import com.example.CrtDgn.Login.Dto.MemberDto;
-import com.example.CrtDgn.Login.domain.Member;
+import com.example.CrtDgn.Login.Domain.Member;
 import com.example.CrtDgn.Login.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.example.CrtDgn.Login.domain;
+package com.example.CrtDgn.Login.Domain;
 
 import lombok.*;
 

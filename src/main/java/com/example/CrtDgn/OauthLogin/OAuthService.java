@@ -1,4 +1,4 @@
-package com.example.CrtDgn.oauthlogin;
+package com.example.CrtDgn.OauthLogin;
 
 import com.example.CrtDgn.Login.Dto.MemberDto;
 import com.example.CrtDgn.Login.Service.MemberService;
@@ -44,7 +44,7 @@ public class OAuthService{
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=7415f20f02ecf19d9ab2d20b5fb49181"); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://60.253.18.164:8050/login/oauth2/code/kakao"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&redirect_uri=http://49.142.162.213:8050/login/oauth2/code/kakao"); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
