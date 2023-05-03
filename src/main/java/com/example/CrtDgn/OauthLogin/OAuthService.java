@@ -1,6 +1,5 @@
 package com.example.CrtDgn.OauthLogin;
 
-import com.example.CrtDgn.Login.Dto.MemberDto;
 import com.example.CrtDgn.Login.Service.MemberService;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -17,7 +16,6 @@ import java.util.HashMap;
 @Service
 public class OAuthService{
 
-    MemberDto memberDto = new MemberDto();
 
     @Autowired
     private final MemberService memberService;

@@ -16,10 +16,9 @@ public class OAuthController {
     @Autowired
     private final MemberService memberService;
 
+
     @Autowired
     private final OAuthService oAuthService;
-
-
     /**
      * 카카오 callback
      * [GET] /oauth/kakao/callback
@@ -37,7 +36,7 @@ public class OAuthController {
     }
 
     @RequestMapping(value="/kakao/login")
-    public String kakaoLogin(@RequestParam("code") String code, HttpSession session) {
+    public Object kakaoLogin(@RequestParam("code") String code, HttpSession session) {
         String access_Token = oAuthService.getKakaoAccessToken(code);
         HashMap<String, Object> userInfo = oAuthService.CreateKakaoUser(access_Token);
         System.out.println("login Controller : " + userInfo);
@@ -46,12 +45,14 @@ public class OAuthController {
         if (userInfo.get("email") != null) {
             session.setAttribute("userId", userInfo.get("email"));
             session.setAttribute("access_Token", access_Token);
+            session.setAttribute("platform", "kakao");
         }
-        return "index";
+        System.out.println(userInfo.get("email"));
+        return userInfo.get("email");
     }
 
     @RequestMapping(value="/naver/login")
-    public String naverLogin(@RequestParam("code") String code, HttpSession session) {
+    public Object naverLogin(@RequestParam("code") String code, HttpSession session) {
         String access_Token = oAuthService.getNaverAccessToken(code);
         HashMap<String, Object> userInfo = oAuthService.CreateNaverUser(access_Token);
         System.out.println("login Controller : " + userInfo);
@@ -60,19 +61,27 @@ public class OAuthController {
         if (userInfo.get("email") != null) {
             session.setAttribute("userId", userInfo.get("email"));
             session.setAttribute("access_Token", access_Token);
+            session.setAttribute("platform", "naver");
         }
-        return "index";
+        System.out.println(userInfo.get("email"));
+        return userInfo.get("email");
     }
 
 
     @RequestMapping(value="/logout")
     public String logout(HttpSession session) {
-        oAuthService.kakaoLogout((String)session.getAttribute("access_Token"));
-        oAuthService.naverLogout((String)session.getAttribute("access_Token"));
+        if (session.getAttribute("platform").equals("kakao"))
+        {
+            oAuthService.kakaoLogout((String)session.getAttribute("access_Token"));
+        }
+        else if (session.getAttribute("platform").equals("naver"))
+        {
+            oAuthService.naverLogout((String)session.getAttribute("access_Token"));
+        }
         session.removeAttribute("access_Token");
         session.removeAttribute("userId");
         session.invalidate();
-        return "index";
+        return "success";
     }
 
 }
