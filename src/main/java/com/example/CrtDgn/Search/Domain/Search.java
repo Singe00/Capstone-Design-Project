@@ -30,10 +30,10 @@ public class Search {
     private String roadaddress;
 
     @Column(name = "latitude")
-    private String latitude;
+    private double latitude;
 
     @Column(name = "longitude")
-    private String longitude;
+    private double longitude;
 
     @Column(name = "score")
     private String score;
@@ -81,19 +81,20 @@ public class Search {
         this.roadaddress = roadaddress;
     }
 
-    public String getLatitude() {
+
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 

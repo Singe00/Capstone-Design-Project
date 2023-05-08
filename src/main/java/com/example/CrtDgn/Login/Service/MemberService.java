@@ -21,10 +21,10 @@ public class MemberService {
     Member member = new Member();
 
     public String signup(MemberDto request){
-        memberRepository.findByEmail(request.getEmail())
-                .ifPresent(m->{
-                    throw new IllegalStateException("이미 존재하는 아이디입니다.");
-                });
+        if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
+            return "이미 존재하는 아이디입니다.";
+        }
+
         if (request.getPassword().equals(request.getCheckPassword()))
         {
             member.setEmail(request.getEmail());

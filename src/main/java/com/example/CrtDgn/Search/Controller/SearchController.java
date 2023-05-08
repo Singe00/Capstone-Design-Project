@@ -37,4 +37,5 @@ public class SearchController {
         return searchRepository.findAllByTitleContaining(query,pageRequest);
     }
 
+
 }
