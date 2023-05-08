@@ -44,7 +44,7 @@ public class Member {
         return password;
     }
 
-    public void setPw(String pw) {
+    public void setPw(String password) {
         this.password = password;
     }
 }

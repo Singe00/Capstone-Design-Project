@@ -18,13 +18,15 @@ public class MemberService {
     @Autowired
     private final MemberRepository memberRepository;
 
-    Member member = new Member();
+
 
     public String signup(MemberDto request){
+        Member member = new Member();
         memberRepository.findByEmail(request.getEmail())
                 .ifPresent(m->{
                     throw new IllegalStateException("이미 존재하는 아이디입니다.");
                 });
+
         if (request.getPassword().equals(request.getCheckPassword()))
         {
             member.setEmail(request.getEmail());
