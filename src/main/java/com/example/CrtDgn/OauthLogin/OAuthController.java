@@ -1,6 +1,5 @@
 package com.example.CrtDgn.OauthLogin;
 
-import com.example.CrtDgn.Login.Service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +12,6 @@ import java.util.HashMap;
 @RequestMapping("/oauth")
 public class OAuthController {
 
-    @Autowired
-    private final MemberService memberService;
 
 
     @Autowired
