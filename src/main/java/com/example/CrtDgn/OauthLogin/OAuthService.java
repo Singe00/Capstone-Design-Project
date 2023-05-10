@@ -16,7 +16,6 @@ import java.util.HashMap;
 @Service
 public class OAuthService{
 
-
     @Autowired
     private final MemberService memberService;
 
@@ -24,7 +23,7 @@ public class OAuthService{
         this.memberService = memberService;
     }
 
-    public String getKakaoAccessToken (String code) {
+/*    public String getKakaoAccessToken (String code) {
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -78,7 +77,7 @@ public class OAuthService{
         }
 
         return access_Token;
-    }
+    }*/
 
     public HashMap<String, Object> CreateKakaoUser(String token) {
         HashMap<String, Object> userInfo = new HashMap<>();
@@ -158,7 +157,7 @@ public class OAuthService{
     }
 
 
-    public String getNaverAccessToken (String code) {
+/*    public String getNaverAccessToken (String code) {
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://nid.naver.com/oauth2.0/token";
@@ -215,7 +214,7 @@ public class OAuthService{
         }
 
         return access_Token;
-    }
+    }*/
 
     public HashMap<String, Object> CreateNaverUser(String token) {
         HashMap<String, Object> userInfo = new HashMap<>();

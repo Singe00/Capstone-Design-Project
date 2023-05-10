@@ -6,19 +6,26 @@ import com.example.CrtDgn.Login.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class MemberService {
-
     @Autowired
     private final MemberRepository memberRepository;
 
+    private static Set<String> loggedInUsers = new HashSet<>();
+
     Member member = new Member();
+    MemberDto memberDto = new MemberDto();
+
 
     public String signup(MemberDto request){
         if (memberRepository.findByEmail(request.getEmail()).isPresent())
@@ -55,5 +62,18 @@ public class MemberService {
         }
     }
 
+    public boolean isLoggedIn(String userEmail) {
+        return loggedInUsers.contains(userEmail);
+    }
+
+    // 로그인된 사용자 정보를 추가하는 메소드
+    public void addLoggedInUser(String userEmail) {
+        loggedInUsers.add(userEmail);
+    }
+
+    // 로그인된 사용자 정보를 제거하는 메소드
+    public void removeLoggedInUser(String userEmail) {
+        loggedInUsers.remove(userEmail);
+    }
 
 }
