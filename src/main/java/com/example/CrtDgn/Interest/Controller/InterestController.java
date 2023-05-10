@@ -1,0 +1,58 @@
+package com.example.CrtDgn.Interest.Controller;
+
+import com.example.CrtDgn.Interest.Dto.InterestDto;
+import com.example.CrtDgn.Interest.Service.InterestService;
+import com.example.CrtDgn.Search.Domain.Search;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@CrossOrigin
+@RequestMapping("/interest")
+public class InterestController {
+    @Autowired
+    private final InterestService interestService;
+
+    @PostMapping("/add")
+    @ResponseBody
+    public boolean addInterest(@RequestBody InterestDto request) {
+        String result = interestService.addInterest(request);
+        if (result.equals("Success"))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    @PostMapping("/delete")
+    @ResponseBody
+    public boolean deleteInterest(@RequestBody InterestDto request) {
+        String result = interestService.deleteInterest(request);
+
+        if (result.equals("Success"))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    @PostMapping("/return")
+    @ResponseBody
+    public List<Search> returnInterest(@RequestBody InterestDto request) {
+        return interestService.returnInterest(request);
+    }
+
+/*    @PostMapping("/returnInterest2")
+    @ResponseBody
+    public List<String> returnInterest2(@RequestBody InterestDto request) {
+        List<String> result = interestService.returnInterest2(request);
+
+        return result;
+    }*/
+}

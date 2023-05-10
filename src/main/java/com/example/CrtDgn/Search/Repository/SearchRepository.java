@@ -14,5 +14,8 @@ public interface SearchRepository extends JpaRepository<Search,Long> {
 
     List<Search> findFirst5ByOrderByScoreDesc();
 
+    Search findByTourid(Long tourKey);
+    List<Search> findAllByTourid(Long tourKey);
+
     Page<Search> findAllByTitleContaining(String searchString,Pageable pageable);
 }

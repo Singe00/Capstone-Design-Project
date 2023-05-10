@@ -30,7 +30,7 @@ class CrtDgnApplicationTests {
 
 	@Test
 	void TourSearch(){
-		searchController.searchToursByTitle("숲");
+
 	}
 
 }

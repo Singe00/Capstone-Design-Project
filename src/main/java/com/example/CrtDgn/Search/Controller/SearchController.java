@@ -1,6 +1,7 @@
 package com.example.CrtDgn.Search.Controller;
 
 import com.example.CrtDgn.Search.Domain.Search;
+import com.example.CrtDgn.Search.Dto.SearchDto;
 import com.example.CrtDgn.Search.Repository.SearchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,19 +23,23 @@ public class SearchController {
     @Autowired
     private final SearchRepository searchRepository;
 
-
     @GetMapping("/main")
     public List<Search> BestPlace(){
-        System.out.println("dsadsad");
         List<Search> list = searchRepository.findFirst5ByOrderByScoreDesc();
         System.out.println(list);
         return list;
     }
 
+    @GetMapping("/search/detail")
+    public Search searchDetail(@RequestBody SearchDto searchDto){
+        Search detail = searchRepository.findByTourid(searchDto.getTourKey());
+        return detail;
+    }
+
     @GetMapping("/search/title")
-    public Page<Search> searchToursByTitle(@RequestParam String query){
+    public Page<Search> searchToursByTitle(@RequestBody SearchDto searchDto){
         PageRequest pageRequest = PageRequest.of(0,Integer.MAX_VALUE, Sort.by(Sort.Direction.DESC, "title"));
-        return searchRepository.findAllByTitleContaining(query,pageRequest);
+        return searchRepository.findAllByTitleContaining(searchDto.getTitle(),pageRequest);
     }
 
 
