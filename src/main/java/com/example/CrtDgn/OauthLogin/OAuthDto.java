@@ -12,4 +12,3 @@ import lombok.Setter;
 public class OAuthDto {
     private String accessToken;
 }
-

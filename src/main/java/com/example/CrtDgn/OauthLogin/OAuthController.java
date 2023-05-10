@@ -32,7 +32,7 @@ public class OAuthController {
             session.setAttribute("access_Token", access_Token);
             session.setAttribute("platform", "kakao");
         }
-        System.out.println("카카오 세션"+session.getAttribute("platform"));
+        System.out.println("카카오 세션"+session.getAttribute(""));
         //return userInfo.get("email");
         if (userInfo.get("email") != null)
         {
@@ -63,78 +63,7 @@ public class OAuthController {
         return "fail";
     }
 
-    @RequestMapping(value = "/logout")
-    public String logout(HttpSession session) {
-        System.out.println("userEmail : "+session.getAttribute("userEmail"));
-        System.out.println("access_Token : "+session.getAttribute("access_Token"));
-        System.out.println("platform : "+session.getAttribute("platform"));
-
-        String platform = (String) session.getAttribute("platform");
-        if (platform == null || platform.equals("none")) {
-            // 로그인된 사용자인지 확인
-            String userEmail = (String) session.getAttribute("userEmail");
-            if (memberService.isLoggedIn(userEmail)) {
-                memberService.removeLoggedInUser(userEmail); // 로그인된 사용자 정보 제거
-                session.removeAttribute("userEmail"); // "userEmail" 속성 제거
-                session.invalidate(); // 세션 무효화
-                System.out.println("로그아웃 성공");
-                return "success"; // 로그아웃 성공
-            }
-            System.out.println("로그아웃 실패");
-            return "fail"; // 로그아웃 실패 (로그인되지 않은 사용자)
-        } else {
-            if (platform.equals("kakao")) {
-                oAuthService.kakaoLogout((String) session.getAttribute("access_Token"));
-            } else if (platform.equals("naver")) {
-                oAuthService.naverLogout((String) session.getAttribute("access_Token"));
-            }
-            session.removeAttribute("access_Token");
-            session.removeAttribute("userEmail");
-            session.invalidate();
-            return "success";
-        }
-    }
-
-/*    @RequestMapping(value = "/logout")
-    public String logout(@RequestBody Dto dto,HttpSession session) {
-        System.out.println(dto.getLogout());
-        System.out.println("userEmail : "+session.getAttribute("userEmail"));
-        System.out.println("access_Token : "+session.getAttribute("access_Token"));
-        System.out.println("platform : "+session.getAttribute("platform"));
-
-        if (dto.getLogout().equals("login")) {
-            // 로그인된 사용자인지 확인
-            String userEmail = (String) session.getAttribute("userEmail");
-            if (memberService.isLoggedIn(userEmail)) {
-                memberService.removeLoggedInUser(userEmail); // 로그인된 사용자 정보 제거
-
-                session.removeAttribute("userEmail"); // "userEmail" 속성 제거
-                session.removeAttribute("access_Token");
-                session.removeAttribute("platform");
-
-                session.invalidate(); // 세션 무효화
-                System.out.println("일반 로그아웃 성공");
-                return "success"; // 로그아웃 성공
-            }
-            System.out.println("일반 로그아웃 실패");
-            return "fail"; // 로그아웃 실패 (로그인되지 않은 사용자)
-        } else {
-            if (dto.getLogout().equals("kakao")) {
-                oAuthService.kakaoLogout((String) session.getAttribute("access_Token"));
-                System.out.println("카카오 로그아웃 성공");
-            } else if (dto.getLogout().equals("naver")) {
-                oAuthService.naverLogout((String) session.getAttribute("access_Token"));
-                System.out.println("네이버 로그아웃 성공");
-            }
-            session.removeAttribute("access_Token");
-            session.removeAttribute("userEmail");
-            session.removeAttribute("platform");
-            session.invalidate();
-            return "success";
-        }
-    }*/
-
-/*    @RequestMapping(value="/kakao/login")
+    @RequestMapping(value="/kakao/login")
     public Object kakaoLogin(@RequestParam("code") String code, HttpSession session) {
         String access_Token = oAuthService.getKakaoAccessToken(code);
         HashMap<String, Object> userInfo = oAuthService.CreateKakaoUser(access_Token);
@@ -164,7 +93,41 @@ public class OAuthController {
         }
         System.out.println(userInfo.get("email"));
         return userInfo.get("email");
-    }*/
+    }
+
+    @RequestMapping(value = "/logout")
+    public String logout(@RequestBody Dto dto,HttpSession session) {
+
+        String platform = (String) session.getAttribute("platform");
+        System.out.println("session : "+session);
+        System.out.println("platform : "+platform);
+
+        if (platform == null || platform.equals("none")) {
+            // 로그인된 사용자인지 확인
+            String userEmail = (String) session.getAttribute("userEmail");
+            if (memberService.isLoggedIn(userEmail)) {
+                memberService.removeLoggedInUser(userEmail); // 로그인된 사용자 정보 제거
+                session.removeAttribute("userEmail"); // "userEmail" 속성 제거
+                session.invalidate(); // 세션 무효화
+                System.out.println("일반 로그아웃 성공");
+                return "success"; // 로그아웃 성공
+            }
+            System.out.println("일반 로그아웃 실패");
+            return "fail"; // 로그아웃 실패 (로그인되지 않은 사용자)
+        } else {
+            if (platform.equals("kakao")) {
+                oAuthService.kakaoLogout((String) session.getAttribute("access_Token"));
+                System.out.println("카카오 로그아웃 성공");
+            } else if (platform.equals("naver")) {
+                oAuthService.naverLogout((String) session.getAttribute("access_Token"));
+                System.out.println("네이버 로그아웃 성공");
+            }
+            session.removeAttribute("access_Token");
+            session.removeAttribute("userEmail");
+            session.invalidate();
+            return "success";
+        }
+    }
 
 /*    @RequestMapping(value="/logout")
     public String logout(HttpSession session) {
@@ -181,4 +144,5 @@ public class OAuthController {
         session.invalidate();
         return "success";
     }*/
+
 }
