@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -70,6 +71,16 @@ public class MemberController {
         return "fail";
     }
 
+    @PostMapping("/join")
+    public Long join(@Valid @RequestBody MemberDto memberDto) {
+        return memberService.join(memberDto);
+    }
+
+    // 로그인 API
+    @PostMapping("/login2")
+    public String login(@RequestBody MemberDto memberDto) {
+        return memberService.login2(memberDto);
+    }
 
 
 /*    @RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})

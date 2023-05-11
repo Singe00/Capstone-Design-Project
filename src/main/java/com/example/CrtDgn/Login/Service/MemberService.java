@@ -3,12 +3,14 @@ package com.example.CrtDgn.Login.Service;
 import com.example.CrtDgn.Login.Domain.Member;
 import com.example.CrtDgn.Login.Dto.MemberDto;
 import com.example.CrtDgn.Login.Repository.MemberRepository;
+import com.example.CrtDgn.Security.Jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -18,8 +20,11 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberService {
-    @Autowired
+
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
+
 
     private static Set<String> loggedInUsers = new HashSet<>();
 
@@ -74,6 +79,29 @@ public class MemberService {
     // 로그인된 사용자 정보를 제거하는 메소드
     public void removeLoggedInUser(String userEmail) {
         loggedInUsers.remove(userEmail);
+    }
+
+
+    @Transactional
+    public Long join(MemberDto memberDto){
+        Member member = Member.builder()
+                .email(memberDto.getEmail())
+                .password(passwordEncoder.encode(memberDto.getPassword()))  //비밀번호 인코딩
+                .roles(Collections.singletonList("ROLE_USER"))         //roles는 최초 USER로 설정
+                .build();
+
+        return memberRepository.save(member).getId();
+    }
+
+    @Transactional
+    public String login2(MemberDto memberDto){
+        Member member = memberRepository.findByEmail(memberDto.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
+        if (!passwordEncoder.matches(memberDto.getPassword(), member.getPassword())) {
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        }
+        // 로그인에 성공하면 email, roles 로 토큰 생성 후 반환
+        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
     }
 
 }
