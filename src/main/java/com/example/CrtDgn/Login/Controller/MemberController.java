@@ -82,6 +82,11 @@ public class MemberController {
     // 로그인 API
     @PostMapping("/login2")
     public String login(@RequestBody MemberDto memberDto) {
+        if (memberService.isLoggedIn(memberDto.getEmail()))
+        {
+            return "fail";
+        }
+        memberService.addLoggedInUser(memberDto.getEmail());
         return memberService.login2(memberDto);
     }
 

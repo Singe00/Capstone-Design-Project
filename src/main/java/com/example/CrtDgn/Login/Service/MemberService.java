@@ -3,6 +3,8 @@ package com.example.CrtDgn.Login.Service;
 import com.example.CrtDgn.Login.Domain.Member;
 import com.example.CrtDgn.Login.Dto.MemberDto;
 import com.example.CrtDgn.Login.Repository.MemberRepository;
+import com.example.CrtDgn.Security.Jwt.JwtDomain;
+import com.example.CrtDgn.Security.Jwt.JwtRepository;
 import com.example.CrtDgn.Security.Jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +26,12 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
-
+    private final JwtRepository jwtRepository;
 
     private static Set<String> loggedInUsers = new HashSet<>();
 
     Member member = new Member();
     MemberDto memberDto = new MemberDto();
-
 
     public String signup(MemberDto request){
         if (memberRepository.findByEmail(request.getEmail()).isPresent())
@@ -100,13 +101,23 @@ public class MemberService {
 
     @Transactional
     public String login2(MemberDto memberDto){
+
         Member member = memberRepository.findByEmail(memberDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
         if (!passwordEncoder.matches(memberDto.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
         // 로그인에 성공하면 email, roles 로 토큰 생성 후 반환
-        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+        String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles(),"default","default");
+
+        JwtDomain jwtDomain = JwtDomain.builder()
+                .userId(member.getId())
+                .token(token)
+                .build();
+
+        jwtRepository.save(jwtDomain);
+
+        return token;
     }
 
 }

@@ -34,9 +34,11 @@ public class JwtTokenProvider {
     }
 
     // 토큰 생성
-    public String createToken(String userPk, List<String> roles) {  // userPK = email
+    public String createToken(String userPk, List<String> roles,String plat,String ac) {  // userPK = email
         Claims claims = Jwts.claims().setSubject(userPk); // JWT payload 에 저장되는 정보단위
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장
+        claims.put("platform", plat);
+        claims.put("accesstoken", ac);
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
@@ -55,6 +57,20 @@ public class JwtTokenProvider {
     // 토큰에서 회원 정보 추출
     public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String getPlatform(String token) {
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+
+        String platform = claims.get("platform", String.class);
+
+        return platform;
+    }
+
+    public Claims getClaims(String token) {
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+
+        return claims;
     }
 
     // 토큰 유효성, 만료일자 확인

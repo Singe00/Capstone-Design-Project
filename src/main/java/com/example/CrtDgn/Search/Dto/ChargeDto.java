@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchDto {
-    private String title;
-    private Long tourKey;
+public class ChargeDto {
     private double latitude;
     private double longitude;
 }

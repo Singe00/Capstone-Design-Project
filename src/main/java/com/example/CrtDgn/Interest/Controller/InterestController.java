@@ -21,25 +21,25 @@ public class InterestController {
 
     @PostMapping("/add")
     @ResponseBody
-    public boolean addInterest(@RequestBody InterestDto request) {
+    public String addInterest(@RequestBody InterestDto request) {
         String result = interestService.addInterest(request);
         if (result.equals("Success"))
         {
-            return true;
+            return "success";
         }
-        return false;
+        return "fail";
     }
 
     @PostMapping("/delete")
     @ResponseBody
-    public boolean deleteInterest(@RequestBody InterestDto request) {
+    public String deleteInterest(@RequestBody InterestDto request) {
         String result = interestService.deleteInterest(request);
 
         if (result.equals("Success"))
         {
-            return true;
+            return "success";
         }
-        return false;
+        return "fail";
     }
 
     @PostMapping("/return")

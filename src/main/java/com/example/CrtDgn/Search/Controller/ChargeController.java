@@ -1,14 +1,12 @@
 package com.example.CrtDgn.Search.Controller;
 
 import com.example.CrtDgn.Search.Domain.Charge;
+import com.example.CrtDgn.Search.Dto.ChargeDto;
 import com.example.CrtDgn.Search.Repository.ChargeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +21,11 @@ public class ChargeController {
     private final ChargeRepository chargeRepository;
 
     @GetMapping("/charge/coordinate")
-    public List<Charge> ChargePlace(@RequestParam("latitude") double latitude,
-                                    @RequestParam("longitude") double longitude){
-
-        System.out.println(latitude);
-        System.out.println(longitude);
+    public List<Charge> ChargePlace(@RequestBody ChargeDto chargeDto){
+        double latitude = chargeDto.getLatitude();
+        double longitude = chargeDto.getLongitude();
+        System.out.println(chargeDto.getLatitude());
+        System.out.println(chargeDto.getLongitude());
         double[] distances = { 0.3, 0.6, 0.9, 1.2,1.5,1.8,2.1 }; // 주변 거리 범위 (단위: km)
 
         List<Charge> nearbyChargeStations = new ArrayList<>();

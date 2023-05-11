@@ -1,35 +1,29 @@
 package com.example.CrtDgn.Security.Jwt;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Table(name = "jwttoken")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "jwt_token")
+@Builder
 public class JwtDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "userid", nullable = false)
     private Long userId;
 
     @Column(name = "token", nullable = false, length = 500)
     private String token;
 
-    @Column(name = "expiration", nullable = false)
-    private LocalDateTime expiration;
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    // Constructors, getters, and setters
-
-    public JwtDomain() {
-        this.createdAt = LocalDateTime.now();
-    }
-
     // Getters and Setters
-
     public Long getId() {
         return id;
     }
@@ -54,20 +48,5 @@ public class JwtDomain {
         this.token = token;
     }
 
-    public LocalDateTime getExpiration() {
-        return expiration;
-    }
-
-    public void setExpiration(LocalDateTime expiration) {
-        this.expiration = expiration;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }
 
