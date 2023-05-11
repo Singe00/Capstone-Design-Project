@@ -72,8 +72,11 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public Long join(@Valid @RequestBody MemberDto memberDto) {
-        return memberService.join(memberDto);
+    public String join(@Valid @RequestBody MemberDto memberDto) {
+        if (memberService.join(memberDto)){
+            return "success";
+        }
+        return "fail";
     }
 
     // 로그인 API

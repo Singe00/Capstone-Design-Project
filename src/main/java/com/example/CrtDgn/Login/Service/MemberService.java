@@ -83,14 +83,19 @@ public class MemberService {
 
 
     @Transactional
-    public Long join(MemberDto memberDto){
+    public boolean join(MemberDto memberDto){
+
+        if (memberRepository.findByEmail(memberDto.getEmail()).isPresent()){
+            return false;
+        }
+
         Member member = Member.builder()
                 .email(memberDto.getEmail())
                 .password(passwordEncoder.encode(memberDto.getPassword()))  //비밀번호 인코딩
                 .roles(Collections.singletonList("ROLE_USER"))         //roles는 최초 USER로 설정
                 .build();
-
-        return memberRepository.save(member).getId();
+        memberRepository.save(member);
+        return true;
     }
 
     @Transactional
