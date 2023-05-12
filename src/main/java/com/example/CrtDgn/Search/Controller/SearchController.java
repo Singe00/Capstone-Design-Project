@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -36,11 +37,10 @@ public class SearchController {
         return detail;
     }
 
-    @GetMapping("/search/title")
-    public Page<Search> searchToursByTitle(@RequestBody SearchDto searchDto){
-        PageRequest pageRequest = PageRequest.of(0,Integer.MAX_VALUE, Sort.by(Sort.Direction.DESC, "title"));
-        return searchRepository.findAllByTitleContaining(searchDto.getTitle(),pageRequest);
-    }
+    @PostMapping("/search/title")
+    public List<Search> searchToursByTitle(@RequestBody List<SearchDto> searchDtoList) {
 
+        return searchRepository.findAllByTitleContaining(searchDtoList.get(0).getTitle());
+    }
 
 }

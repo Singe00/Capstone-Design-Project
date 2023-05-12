@@ -10,5 +10,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class JwtDto {
-    private String token;
+    private String logout;
 }

@@ -17,5 +17,5 @@ public interface SearchRepository extends JpaRepository<Search,Long> {
     Search findByTourid(Long tourKey);
     List<Search> findAllByTourid(Long tourKey);
 
-    Page<Search> findAllByTitleContaining(String searchString,Pageable pageable);
+    List<Search> findAllByTitleContaining(String searchString);
 }

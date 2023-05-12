@@ -30,10 +30,8 @@ public class OAuthController {
     private final PasswordEncoder passwordEncoder;
     @Autowired
     private final MemberRepository memberRepository;
-
     @Autowired
     private final JwtTokenProvider jwtTokenProvider;
-
     @Autowired
     private final JwtRepository jwtRepository;
 
@@ -69,6 +67,13 @@ public class OAuthController {
             // 로그인에 성공하면 email, roles 로 토큰 생성 후 반환
             String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles(),"kakao",access_Token.getAccessToken());
 
+            JwtDomain jwtDomain = JwtDomain.builder()
+                    .userId(member.getId())
+                    .token(token)
+                    .build();
+
+            jwtRepository.save(jwtDomain);
+
             return token;
         }
 
@@ -103,6 +108,13 @@ public class OAuthController {
 
             // 로그인에 성공하면 email, roles로 토큰 생성 후 반환
             String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles(), "naver", access_Token.getAccessToken());
+
+            JwtDomain jwtDomain = JwtDomain.builder()
+                    .userId(member.getId())
+                    .token(token)
+                    .build();
+
+            jwtRepository.save(jwtDomain);
 
             return token;
         }
@@ -142,7 +154,7 @@ public class OAuthController {
         return userInfo.get("email");
     }*/
 
-    @RequestMapping(value = "/logout")
+/*    @RequestMapping(value = "/logout")
     public String logout(@RequestBody Dto dto,HttpSession session) {
 
         String platform = (String) session.getAttribute("platform");
@@ -174,15 +186,17 @@ public class OAuthController {
             session.invalidate();
             return "success";
         }
-    }
+    }*/
 
-    @RequestMapping(value = "/logout2")
+    @RequestMapping(value = "/logout")
     public String logout2(@RequestBody JwtDto jwtDto) {
-
-        Long uid = jwtRepository.findByToken(jwtDto.getToken()).getUserId();
+        System.out.println(jwtDto.getLogout());
+        JwtDomain jd = jwtRepository.findByToken(jwtDto.getLogout());
+        Long uid = jd.getUserId();
+        System.out.println(uid);
         Optional<Member> op = memberRepository.findById(uid);
 
-        Claims claims = jwtTokenProvider.getClaims(jwtDto.getToken());
+        Claims claims = jwtTokenProvider.getClaims(jwtDto.getLogout());
 
         String platform = claims.get("platform", String.class);
         String ac = claims.get("accesstoken", String.class);
@@ -193,6 +207,7 @@ public class OAuthController {
             String userEmail = op.get().getEmail();
             if (memberService.isLoggedIn(userEmail)) {
                 memberService.removeLoggedInUser(userEmail); // 로그인된 사용자 정보 제거
+                jwtRepository.delete(jd);
                 System.out.println("일반 로그아웃 성공");
                 return "success"; // 로그아웃 성공
             }
@@ -204,11 +219,13 @@ public class OAuthController {
         else {
             if (platform.equals("kakao")) {
                 oAuthService.kakaoLogout(ac);
+                jwtRepository.delete(jd);
                 System.out.println("카카오 로그아웃 성공");
                 return "success";
             }
             else if (platform.equals("naver")) {
                 oAuthService.naverLogout(ac);
+                jwtRepository.delete(jd);
                 System.out.println("네이버 로그아웃 성공");
                 return "success";
             }

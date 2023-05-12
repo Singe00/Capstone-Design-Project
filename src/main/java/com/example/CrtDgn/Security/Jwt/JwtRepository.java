@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface JwtRepository extends JpaRepository<JwtDomain,Long> {
     JwtDomain findByToken(String token);
+
 }
