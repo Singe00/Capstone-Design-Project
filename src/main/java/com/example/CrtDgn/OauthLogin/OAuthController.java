@@ -208,6 +208,7 @@ public class OAuthController {
             if (memberService.isLoggedIn(userEmail)) {
                 memberService.removeLoggedInUser(userEmail); // 로그인된 사용자 정보 제거
                 jwtRepository.delete(jd);
+
                 System.out.println("일반 로그아웃 성공");
                 return "success"; // 로그아웃 성공
             }

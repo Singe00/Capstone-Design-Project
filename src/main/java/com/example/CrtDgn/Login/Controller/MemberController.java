@@ -1,5 +1,6 @@
 package com.example.CrtDgn.Login.Controller;
 
+import com.example.CrtDgn.Login.Dto.ChangeDto;
 import com.example.CrtDgn.Login.Dto.MemberDto;
 import com.example.CrtDgn.Login.Service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -84,10 +85,34 @@ public class MemberController {
     public String login(@RequestBody MemberDto memberDto) {
         if (memberService.isLoggedIn(memberDto.getEmail()))
         {
+            System.out.println("이미 로그인 되어 있습니다.");
             return "fail";
         }
-        memberService.addLoggedInUser(memberDto.getEmail());
+
         return memberService.login2(memberDto);
+    }
+
+    @PostMapping("/find")
+    public String findPw(@RequestBody MemberDto memberDto) {
+        String tempPw = memberService.generateTemporaryPassword();
+
+        if (memberService.sendRandomPasswordByEmail(memberDto.getEmail(),tempPw))
+        {
+            System.out.println("새로운 비밀번호 : "+tempPw.toString());
+            System.out.println("메일이 발송되었습니다.");
+            return "success";
+        }
+        return "fail";
+    }
+
+    @PostMapping("/change")
+    public String findPw(@RequestBody ChangeDto changeDto) {
+        log.info("userEmail = {}, password = {},newPassword = {},checkPassword = {}", changeDto.getEmail(), changeDto.getPassword(),changeDto.getNewPassword(),changeDto.getCheckPassword());
+
+        if(memberService.changePw(changeDto)) {
+            return "success";
+        }
+        return "fail";
     }
 
 
