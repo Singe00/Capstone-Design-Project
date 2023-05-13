@@ -47,7 +47,7 @@ public class MemberController {
     @PostMapping("/find")
     public String findPw(@RequestBody MemberDto memberDto) {
         System.out.println("임시 비번 발급 요청");
-        System.out.println("email : "+memberDto.getEmail()  );
+
         String tempPw = memberService.generateTemporaryPassword();
 
         if (memberService.sendRandomPasswordByEmail(memberDto.getEmail(),tempPw))

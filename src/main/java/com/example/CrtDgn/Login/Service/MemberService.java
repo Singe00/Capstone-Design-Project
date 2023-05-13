@@ -39,7 +39,6 @@ public class MemberService {
 
 
     private static Set<String> loggedInUsers = new HashSet<>();
-    private static Set<String> sendingInPw = new HashSet<>();
 
     Member member = new Member();
     MemberDto memberDto = new MemberDto();
@@ -203,7 +202,7 @@ public class MemberService {
             System.out.println("가입되지 않은 회원입니다!");
             return false;
         }
-        addSendingInUser(member.getEmail());
+
         // 이메일 전송
         String subject = "제주앱 임시 비밀번호 안내";
         String body = "<html>"
@@ -224,16 +223,13 @@ public class MemberService {
                 // 이미 등록된 사용자인 경우 Access Token 업데이트
                 member.setPassword(passwordEncoder.encode(temporaryPassword.toString()));
                 memberRepository.save(member);
-                removeSendingInUser(member.getEmail());
                 return true;
             }else{
-                removeSendingInUser(member.getEmail());
                 return false;
             }
         } catch (MessagingException e) {
             // 이메일 전송 실패 시 예외 처리
             e.printStackTrace();
-            removeSendingInUser(member.getEmail());
             return false;
         }
     }
@@ -256,17 +252,4 @@ public class MemberService {
 
     }
 
-    public boolean isSendingIn(String userEmail) {
-        return sendingInPw.contains(userEmail);
-    }
-
-    // 로그인된 사용자 정보를 추가하는 메소드
-    public void addSendingInUser(String userEmail) {
-        sendingInPw.add(userEmail);
-    }
-
-    // 로그인된 사용자 정보를 제거하는 메소드
-    public void removeSendingInUser(String userEmail) {
-        sendingInPw.remove(userEmail);
-    }
 }
