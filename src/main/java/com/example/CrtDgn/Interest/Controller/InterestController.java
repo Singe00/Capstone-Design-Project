@@ -22,6 +22,7 @@ public class InterestController {
     @PostMapping("/add")
     @ResponseBody
     public String addInterest(@RequestBody InterestDto request) {
+        System.out.println("관심 추가 요청");
         String result = interestService.addInterest(request);
         if (result.equals("Success"))
         {
@@ -33,6 +34,7 @@ public class InterestController {
     @PostMapping("/delete")
     @ResponseBody
     public String deleteInterest(@RequestBody InterestDto request) {
+        System.out.println("관심 삭제 요청");
         String result = interestService.deleteInterest(request);
 
         if (result.equals("Success"))
@@ -45,6 +47,7 @@ public class InterestController {
     @PostMapping("/return")
     @ResponseBody
     public List<Search> returnInterest(@RequestBody InterestDto request) {
+        System.out.println("관심 리스트 반환 요청");
         return interestService.returnInterest(request);
     }
 

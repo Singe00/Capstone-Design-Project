@@ -26,6 +26,7 @@ public class SearchController {
 
     @GetMapping("/main")
     public List<Search> BestPlace(){
+        System.out.println("대표 관광지 정보 요청");
         List<Search> list = searchRepository.findFirst5ByOrderByScoreDesc();
         System.out.println(list);
         return list;
@@ -33,13 +34,14 @@ public class SearchController {
 
     @GetMapping("/search/detail")
     public Search searchDetail(@RequestBody SearchDto searchDto){
+        System.out.println("관광지 상세정보 요청");
         Search detail = searchRepository.findByTourid(searchDto.getTourKey());
         return detail;
     }
 
     @PostMapping("/search/title")
     public List<Search> searchToursByTitle(@RequestBody List<SearchDto> searchDtoList) {
-
+        System.out.println("관광지 검색 요청");
         return searchRepository.findAllByTitleContaining(searchDtoList.get(0).getTitle());
     }
 

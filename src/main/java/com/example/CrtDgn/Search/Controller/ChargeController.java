@@ -22,6 +22,7 @@ public class ChargeController {
 
     @GetMapping("/charge/coordinate")
     public List<Charge> ChargePlace(@RequestBody ChargeDto chargeDto){
+        System.out.println("충전소 검색 요청");
         double latitude = chargeDto.getLatitude();
         double longitude = chargeDto.getLongitude();
         System.out.println(chargeDto.getLatitude());
