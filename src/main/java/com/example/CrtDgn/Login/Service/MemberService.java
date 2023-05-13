@@ -118,6 +118,7 @@ public class MemberService {
         System.out.println("비번 : "+memberDto.getPassword());
         System.out.println("비번 : "+member.getPassword());
         if (!passwordEncoder.matches(memberDto.getPassword(), member.getPassword())) {
+            System.out.println("잘못된 비밀번호입니다.");
             return "잘못된 비밀번호입니다.";
         }
         // 로그인에 성공하면 email, roles 로 토큰 생성 후 반환
@@ -134,19 +135,19 @@ public class MemberService {
         return token;
     }
 
-    public boolean changePw(ChangeDto changeDto){
+    public String changePw(ChangeDto changeDto){
 
         // 회원 비밀번호 업데이트 로직
         Member member = memberRepository.findMByEmail(changeDto.getEmail());
 
         if (member==null){
             System.out.println("가입되지 않은 회원입니다!");
-            return false;
+            return "fail1";
         }
 
         if (!passwordEncoder.matches(changeDto.getPassword(), member.getPassword())) {
             System.out.println("현재 비밀번호가 다릅니다!");
-            return false;
+            return "fail2";
         }
 
         if (changeDto.getNewPassword().equals(changeDto.getCheckPassword()))
@@ -156,10 +157,11 @@ public class MemberService {
             // 이미 등록된 사용자인 경우 Access Token 업데이트
             member.setPassword(passwordEncoder.encode(changeDto.getNewPassword()));
             memberRepository.save(member);
-            return true;
+            return "success";
         }
         else {
-            return false;
+            System.out.println("비번 확인 필요!");
+            return "fail3";
         }
     }
 

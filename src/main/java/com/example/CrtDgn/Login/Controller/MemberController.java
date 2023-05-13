@@ -1,5 +1,6 @@
 package com.example.CrtDgn.Login.Controller;
 
+import com.example.CrtDgn.Login.Domain.Member;
 import com.example.CrtDgn.Login.Dto.ChangeDto;
 import com.example.CrtDgn.Login.Dto.MemberDto;
 import com.example.CrtDgn.Login.Service.MemberService;
@@ -96,6 +97,7 @@ public class MemberController {
     public String findPw(@RequestBody MemberDto memberDto) {
         String tempPw = memberService.generateTemporaryPassword();
 
+
         if (memberService.sendRandomPasswordByEmail(memberDto.getEmail(),tempPw))
         {
             System.out.println("새로운 비밀번호 : "+tempPw.toString());
@@ -108,11 +110,23 @@ public class MemberController {
     @PostMapping("/change")
     public String findPw(@RequestBody ChangeDto changeDto) {
         log.info("userEmail = {}, password = {},newPassword = {},checkPassword = {}", changeDto.getEmail(), changeDto.getPassword(),changeDto.getNewPassword(),changeDto.getCheckPassword());
-
-        if(memberService.changePw(changeDto)) {
+        String re = memberService.changePw(changeDto);
+        if(re.equals("success")) {
             return "success";
         }
-        return "fail";
+        else if (re.equals("fail1")){
+            return "fail1";
+        }
+        else if (re.equals("fail2")){
+            return "fail2";
+        }
+        else if (re.equals("fail3")){
+            return "fail3";
+        }
+        else {
+            return "fail";
+        }
+
     }
 
 
