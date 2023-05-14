@@ -27,7 +27,7 @@ public class SearchController {
     @GetMapping("/main")
     public List<Search> BestPlace(){
         System.out.println("대표 관광지 정보 요청");
-        List<Search> list = searchRepository.findFirst5ByOrderByScoreDesc();
+        List<Search> list = searchRepository.findRandomFiveTours();
         System.out.println(list);
         return list;
     }

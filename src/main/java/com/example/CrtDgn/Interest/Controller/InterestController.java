@@ -23,6 +23,8 @@ public class InterestController {
     @ResponseBody
     public String addInterest(@RequestBody InterestDto request) {
         System.out.println("관심 추가 요청");
+        System.out.println("email : "+request.getEmail());
+        System.out.println("tourid"+request.getTourid());
         String result = interestService.addInterest(request);
         if (result.equals("Success"))
         {
@@ -49,6 +51,19 @@ public class InterestController {
     public List<Search> returnInterest(@RequestBody InterestDto request) {
         System.out.println("관심 리스트 반환 요청");
         return interestService.returnInterest(request);
+    }
+
+    @PostMapping("/check")
+    @ResponseBody
+    public String checkInterest(@RequestBody InterestDto request) {
+        System.out.println("관심 확인 요청");
+        String result = interestService.deleteInterest(request);
+
+        if (result.equals("Success"))
+        {
+            return "success";
+        }
+        return "fail";
     }
 
 /*    @PostMapping("/returnInterest2")

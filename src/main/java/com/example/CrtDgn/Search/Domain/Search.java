@@ -17,14 +17,8 @@ public class Search {
     @Column(name = "tourid")
     private Long tourid;
 
-    @Column(name = "content")
-    private String content;
-
     @Column(name = "title")
     private String title;
-
-    @Column(name = "address")
-    private String address;
 
     @Column(name = "roadaddress")
     private String roadaddress;
@@ -35,11 +29,17 @@ public class Search {
     @Column(name = "longitude")
     private double longitude;
 
-    @Column(name = "score")
-    private String score;
+    @Column(name = "phoneno")
+    private String phoneno;
 
-    @Column(name = "imageurl")
-    private String imageurl;
+    @Column(name = "tag")
+    private String tag;
+
+    @Column(name = "introduction")
+    private String introduction;
+
+    @Column(name = "imagepath")
+    private String imagepath;
 
     public Long getTourid() {
         return tourid;
@@ -47,14 +47,6 @@ public class Search {
 
     public void setTourid(Long tourid) {
         this.tourid = tourid;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public String getTitle() {
@@ -65,13 +57,7 @@ public class Search {
         this.title = title;
     }
 
-    public String getAddress() {
-        return address;
-    }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public String getRoadaddress() {
         return roadaddress;
@@ -98,19 +84,35 @@ public class Search {
         this.longitude = longitude;
     }
 
-    public String getScore() {
-        return score;
+    public String getPhoneno() {
+        return phoneno;
     }
 
-    public void setScore(String score) {
-        this.score = score;
+    public void setPhoneno(String phoneno) {
+        this.phoneno = phoneno;
     }
 
-    public String getImageurl() {
-        return imageurl;
+    public String getTag() {
+        return tag;
     }
 
-    public void setImageurl(String imageurl) {
-        this.imageurl = imageurl;
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public String getImagepath() {
+        return imagepath;
+    }
+
+    public void setImagepath(String imagepath) {
+        this.imagepath = imagepath;
     }
 }
