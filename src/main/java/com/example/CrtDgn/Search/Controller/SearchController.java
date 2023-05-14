@@ -1,6 +1,7 @@
 package com.example.CrtDgn.Search.Controller;
 
 import com.example.CrtDgn.Search.Domain.Search;
+import com.example.CrtDgn.Search.Domain.Search2;
 import com.example.CrtDgn.Search.Dto.SearchDto;
 import com.example.CrtDgn.Search.Repository.SearchRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,9 +41,32 @@ public class SearchController {
     }
 
     @PostMapping("/search/title")
-    public List<Search> searchToursByTitle(@RequestBody List<SearchDto> searchDtoList) {
+    public List<Search2> searchToursByTitle(@RequestBody List<SearchDto> searchDtoList) {
         System.out.println("관광지 검색 요청");
-        return searchRepository.findAllByTitleContaining(searchDtoList.get(0).getTitle());
+        String email = searchDtoList.get(0).getEmail();
+        String title = searchDtoList.get(0).getTitle();
+
+        List<Object[]> result = searchRepository.getTourWithInterestByTitle(email, title);
+        List<Search2> searchList = new ArrayList<>();
+
+        for (Object[] row : result) {
+            Search2 search = Search2.builder()
+                    .tourId((Long) row[0])
+                    .title((String) row[1])
+                    .roadaddress((String) row[2])
+                    .latitude((double) row[3])
+                    .longitude((double) row[4])
+                    .phoneno((String) row[5])
+                    .tag((String) row[6])
+                    .introduction((String) row[7])
+                    .imagepath((String) row[8])
+                    .interested(((Integer) row[9]).toString()) // 관심 여부를 문자열로 변환하여 설정
+                    .build();
+            searchList.add(search);
+        }
+
+        return searchList;
+//        return searchRepository.findAllByTitleContaining(searchDtoList.get(0).getTitle());
     }
 
 }

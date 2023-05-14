@@ -11,11 +11,11 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Builder
-public class Search {
+public class Search2 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tourid")
-    private Long tourid;
+    private Long tourId;
 
     @Column(name = "title")
     private String title;
@@ -41,14 +41,15 @@ public class Search {
     @Column(name = "imagepath")
     private String imagepath;
 
-    public Long getTourid() {
-        return tourid;
+    private String interested;
+
+    public Long getTourId() {
+        return tourId;
     }
 
-    public void setTourid(Long tourid) {
-        this.tourid = tourid;
+    public void setTourId(Long tourId) {
+        this.tourId = tourId;
     }
-
     public String getTitle() {
         return title;
     }
@@ -116,4 +117,11 @@ public class Search {
         this.imagepath = imagepath;
     }
 
+    public String getInterested() {
+        return interested;
+    }
+
+    public void setInterested(String interested) {
+        this.interested = interested;
+    }
 }

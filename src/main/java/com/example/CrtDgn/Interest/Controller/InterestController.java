@@ -37,6 +37,8 @@ public class InterestController {
     @ResponseBody
     public String deleteInterest(@RequestBody InterestDto request) {
         System.out.println("관심 삭제 요청");
+        System.out.println("email : "+request.getEmail());
+        System.out.println("tourid"+request.getTourid());
         String result = interestService.deleteInterest(request);
 
         if (result.equals("Success"))
@@ -48,9 +50,14 @@ public class InterestController {
 
     @PostMapping("/return")
     @ResponseBody
-    public List<Search> returnInterest(@RequestBody InterestDto request) {
-        System.out.println("관심 리스트 반환 요청");
-        return interestService.returnInterest(request);
+    public String returnInterest(@RequestBody InterestDto request) {
+        System.out.println("관심 검사 요청");
+        if (interestService.returnInterest(request)){
+            return "success";
+        }
+        else {
+            return "fail";
+        }
     }
 
     @PostMapping("/check")

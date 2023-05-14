@@ -66,14 +66,15 @@ public class InterestService {
         return "Fail";
     }
 
-    public List<Search> returnInterest(InterestDto request) {
-        Member member = memberRepository.findByEmail(request.getEmail()).get();
+    public boolean returnInterest(InterestDto request) {
+        Optional<Member> member = memberRepository.findByEmail(request.getEmail());
 
-        List<Long> tourKey = interestRepository.findAllByUserId(member.getId()).stream()
-                .map(Interest::getTourkey).toList();
-
-        return searchRepository.findAllById(tourKey);
-
+        if (interestRepository.findByUserIdAndTourkey(member.get().getId(),request.getTourid()).isPresent())
+        {
+            log.info("이미 목록에 있는 종목입니다.");
+            return false;
+        }
+        return true;
     }
 
 

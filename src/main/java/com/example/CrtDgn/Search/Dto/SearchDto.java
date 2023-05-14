@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchDto {
+    private String email;
     private String title;
     private Long tourKey;
     private double latitude;
