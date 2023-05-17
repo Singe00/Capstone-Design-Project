@@ -3,6 +3,7 @@ package com.example.CrtDgn.Search.Controller;
 import com.example.CrtDgn.Search.Domain.Search;
 import com.example.CrtDgn.Search.Domain.Search2;
 import com.example.CrtDgn.Search.Dto.SearchDto;
+import com.example.CrtDgn.Search.Dto.TagDto;
 import com.example.CrtDgn.Search.Repository.SearchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class SearchController {
     @GetMapping("/search/detail")
     public Search searchDetail(@RequestBody SearchDto searchDto){
         System.out.println("관광지 상세정보 요청");
-        Search detail = searchRepository.findByTourid(searchDto.getTourKey());
+        Search detail = searchRepository.findByTourid(searchDto.getTourKey().intValue());
         return detail;
     }
 
@@ -47,6 +48,35 @@ public class SearchController {
         String title = searchDtoList.get(0).getTitle();
 
         List<Object[]> result = searchRepository.getTourWithInterestByTitle(email, title);
+        List<Search2> searchList = new ArrayList<>();
+
+        for (Object[] row : result) {
+            Search2 search = Search2.builder()
+                    .tourId((Long) row[0])
+                    .title((String) row[1])
+                    .roadaddress((String) row[2])
+                    .latitude((double) row[3])
+                    .longitude((double) row[4])
+                    .phoneno((String) row[5])
+                    .tag((String) row[6])
+                    .introduction((String) row[7])
+                    .imagepath((String) row[8])
+                    .interested(((Integer) row[9]).toString()) // 관심 여부를 문자열로 변환하여 설정
+                    .build();
+            searchList.add(search);
+        }
+
+        return searchList;
+//        return searchRepository.findAllByTitleContaining(searchDtoList.get(0).getTitle());
+    }
+
+    @PostMapping("/search/tag")
+    public List<Search2> searchToursByTag(@RequestBody List<TagDto> searchDtoList) {
+        System.out.println("관광지 검색 요청");
+        String email = searchDtoList.get(0).getEmail();
+        String tag = searchDtoList.get(0).getTag();
+
+        List<Object[]> result = searchRepository.getTourWithInterestByTag(email, tag);
         List<Search2> searchList = new ArrayList<>();
 
         for (Object[] row : result) {

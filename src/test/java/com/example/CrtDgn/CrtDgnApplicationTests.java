@@ -2,10 +2,14 @@ package com.example.CrtDgn;
 
 import com.example.CrtDgn.Login.Dto.MemberDto;
 import com.example.CrtDgn.Login.Service.MemberService;
+import com.example.CrtDgn.Recommand.Service.PredictionService;
 import com.example.CrtDgn.Search.Controller.SearchController;
+import com.example.CrtDgn.Search.Domain.Search;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 class CrtDgnApplicationTests {
@@ -16,21 +20,21 @@ class CrtDgnApplicationTests {
 	@Autowired
 	private SearchController searchController;
 
+	@Autowired
+	private PredictionService predictionService;
+
+
 
 	@Test
-	void signup() {
-		MemberDto request1 = new MemberDto();
+	void Predict(){
+        List<String[]> predictData= predictionService.runPy("20230517","5");
 
-		request1.setEmail("testqefe");
-		request1.setPassword("asdasd");
-		request1.setCheckPassword("asdasd");
+		predictionService.updateTraffic(predictData);
 
-		memberService.signup(request1);
-	}
-
-	@Test
-	void TourSearch(){
 
 	}
+
 
 }
+
+

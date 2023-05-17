@@ -9,11 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchDto {
+public class TagDto {
     private String email;
-    private String title;
-    private Long tourKey;
-    private double latitude;
-    private double longitude;
-    private String sort;
+    private String tag;
 }

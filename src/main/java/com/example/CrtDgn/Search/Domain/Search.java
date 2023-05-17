@@ -1,6 +1,7 @@
 package com.example.CrtDgn.Search.Domain;
 
 import lombok.*;
+import org.springframework.data.relational.core.sql.In;
 
 import javax.persistence.*;
 
@@ -15,7 +16,7 @@ public class Search {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tourid")
-    private Long tourid;
+    private Integer tourid;
 
     @Column(name = "title")
     private String title;
@@ -41,11 +42,11 @@ public class Search {
     @Column(name = "imagepath")
     private String imagepath;
 
-    public Long getTourid() {
+    public Integer getTourid() {
         return tourid;
     }
 
-    public void setTourid(Long tourid) {
+    public void setTourid(Integer tourid) {
         this.tourid = tourid;
     }
 

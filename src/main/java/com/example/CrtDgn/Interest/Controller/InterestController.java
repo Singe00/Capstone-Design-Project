@@ -3,6 +3,7 @@ package com.example.CrtDgn.Interest.Controller;
 import com.example.CrtDgn.Interest.Dto.InterestDto;
 import com.example.CrtDgn.Interest.Service.InterestService;
 import com.example.CrtDgn.Search.Domain.Search;
+import com.example.CrtDgn.Search.Domain.Search2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,28 +51,19 @@ public class InterestController {
 
     @PostMapping("/return")
     @ResponseBody
-    public String returnInterest(@RequestBody InterestDto request) {
-        System.out.println("관심 검사 요청");
-        if (interestService.returnInterest(request)){
-            return "success";
+    public List<Search2> returnInterest(@RequestBody List<InterestDto> request) {
+        System.out.println("관심 리스트 요청");
+        System.out.println("email : "+request.get(0).getEmail());
+        List<Search2> rs = interestService.returnInterest(request.get(0).getEmail());
+        if (rs != null){
+            return rs;
+        }else {
+            throw new RuntimeException("Failed to retrieve interest list.");
         }
-        else {
-            return "fail";
-        }
+
     }
 
-    @PostMapping("/check")
-    @ResponseBody
-    public String checkInterest(@RequestBody InterestDto request) {
-        System.out.println("관심 확인 요청");
-        String result = interestService.deleteInterest(request);
 
-        if (result.equals("Success"))
-        {
-            return "success";
-        }
-        return "fail";
-    }
 
 /*    @PostMapping("/returnInterest2")
     @ResponseBody
