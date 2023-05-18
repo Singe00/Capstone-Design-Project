@@ -1,4 +1,4 @@
-package com.example.CrtDgn.OauthLogin;
+package com.example.CrtDgn.OauthLogin.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

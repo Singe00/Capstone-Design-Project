@@ -1,4 +1,4 @@
-package com.example.CrtDgn.OauthLogin;
+package com.example.CrtDgn.OauthLogin.Service;
 
 import com.example.CrtDgn.Login.Service.MemberService;
 import com.google.gson.JsonElement;

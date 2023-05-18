@@ -1,8 +1,10 @@
-package com.example.CrtDgn.OauthLogin;
+package com.example.CrtDgn.OauthLogin.Controller;
 
 import com.example.CrtDgn.Login.Domain.Member;
 import com.example.CrtDgn.Login.Repository.MemberRepository;
 import com.example.CrtDgn.Login.Service.MemberService;
+import com.example.CrtDgn.OauthLogin.Dto.OAuthDto;
+import com.example.CrtDgn.OauthLogin.Service.OAuthService;
 import com.example.CrtDgn.Security.Jwt.JwtDomain;
 import com.example.CrtDgn.Security.Jwt.JwtDto;
 import com.example.CrtDgn.Security.Jwt.JwtRepository;
@@ -13,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 @RestController

@@ -12,4 +12,6 @@ public interface RoadRepository extends JpaRepository<Road,Long> {
     List<Road> findAllByRoadid(int roadid);
 
     List<Road> findAllByTraffic(int traffic);
+
+    Road findByTid(int tid);
 }
