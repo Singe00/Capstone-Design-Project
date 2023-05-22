@@ -25,10 +25,8 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@Valid @RequestBody MemberDto memberDto) {
         System.out.println("회원가입 요청");
-        if (memberService.join(memberDto)){
-            return "success";
-        }
-        return "fail";
+
+        return memberService.join(memberDto);
     }
 
     // 로그인 API

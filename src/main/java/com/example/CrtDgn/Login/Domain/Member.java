@@ -30,6 +30,9 @@ public class Member implements UserDetails {
     @Column(length = 300, nullable = false)
     private String password;
 
+    @Column(length = 30, nullable = false)
+    private  String platform;
+
     @ElementCollection(fetch = FetchType.EAGER) //roles 컬렉션
     @Builder.Default
     private List<String> roles = new ArrayList<>();

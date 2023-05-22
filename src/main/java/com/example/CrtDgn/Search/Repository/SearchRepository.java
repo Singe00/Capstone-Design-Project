@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SearchRepository extends JpaRepository<Search,Long> {
+public interface SearchRepository extends JpaRepository<Search,Integer> {
 
     @Query(value = "SELECT * FROM tour ORDER BY RAND() LIMIT 5", nativeQuery = true)
     List<Search> findRandomFiveTours();
@@ -26,7 +26,7 @@ public interface SearchRepository extends JpaRepository<Search,Long> {
             "CASE WHEN i.userId IS NOT NULL THEN 1 ELSE 0 END AS isInterested " +
             "FROM Search2 t LEFT JOIN Interest i ON t.tourId = i.tourkey AND i.userId = " +
             "(SELECT m.id FROM Member m WHERE m.email = :email) " +
-            "WHERE t.title LIKE %:tag%")
+            "WHERE t.tag LIKE %:tag%")
     List<Object[]> getTourWithInterestByTag(@Param("email") String email, @Param("tag") String tag);
 
     @Query("SELECT t.tourId, t.title, t.roadaddress, t.latitude, t.longitude, t.phoneno, t.tag, t.introduction, t.imagepath, " +
@@ -40,5 +40,7 @@ public interface SearchRepository extends JpaRepository<Search,Long> {
     Search findNearestTouristSpot(@Param("latitude") double latitude, @Param("longitude") double longitude);
 
     Search findByTourid(Integer tourKey);
+
+    List<Search> findAllByTourid(int tourid);
 
 }

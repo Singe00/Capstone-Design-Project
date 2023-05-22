@@ -94,19 +94,25 @@ public class MemberService {
 
 
     @Transactional
-    public boolean join(MemberDto memberDto){
-
-        if (memberRepository.findByEmail(memberDto.getEmail()).isPresent()){
-            return false;
+    public String join(MemberDto memberDto){
+        Member m = memberRepository.findMByEmail(memberDto.getEmail());
+        if (m != null){
+            if (m.getPlatform() == "kakao"){
+                return "fail2";
+            } else if (m.getPlatform() == "naver") {
+                return "fail3";
+            }
+            return "fail1";
         }
 
         Member member = Member.builder()
                 .email(memberDto.getEmail())
                 .password(passwordEncoder.encode(memberDto.getPassword()))  //비밀번호 인코딩
+                .platform("default")
                 .roles(Collections.singletonList("ROLE_USER"))         //roles는 최초 USER로 설정
                 .build();
         memberRepository.save(member);
-        return true;
+        return "success";
     }
 
     @Transactional

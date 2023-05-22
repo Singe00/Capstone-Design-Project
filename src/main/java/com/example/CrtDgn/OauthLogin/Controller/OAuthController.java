@@ -56,6 +56,7 @@ public class OAuthController {
                 member = Member.builder()
                         .email(email)
                         .password(passwordEncoder.encode(access_Token.getAccessToken()))
+                        .platform("kakao")
                         .roles(Collections.singletonList("ROLE_USER"))
                         .build();
             } else {
@@ -99,6 +100,7 @@ public class OAuthController {
                 member = Member.builder()
                         .email(email)
                         .password(passwordEncoder.encode(access_Token.getAccessToken()))
+                        .platform("naver")
                         .roles(Collections.singletonList("ROLE_USER"))
                         .build();
             } else {

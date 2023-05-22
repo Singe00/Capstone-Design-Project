@@ -78,26 +78,9 @@ public class SearchController {
             searchList.add(search);
         }
 
-        // 현재 시간 가져오기
-        LocalDateTime now = LocalDateTime.now();
 
-        // 연월일 포맷 지정
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-
-        // 시간 포맷 지정
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H");
-
-        // 연월일과 시로 변환
-        String date = now.format(dateFormatter);
-        String hour = now.format(timeFormatter);
-
-        List<String[]> predictData= predictionService.runPy(date,hour);
-
-        predictionService.updateTraffic(predictData);
-
-        // Join을 통해 road 테이블에서 traffic 값을 가져와서 정렬
+        // traffic 값을 기준으로 searchList 오름차순 정렬
         searchList.sort(Comparator.comparingInt(search -> getTrafficValueFromRoadTable(search.getTourId())));
-
 
         return searchList;
 //        return searchRepository.findAllByTitleContaining(searchDtoList.get(0).getTitle());
@@ -127,23 +110,6 @@ public class SearchController {
                     .build();
             searchList.add(search);
         }
-
-        // 현재 시간 가져오기
-        LocalDateTime now = LocalDateTime.now();
-
-        // 연월일 포맷 지정
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-
-        // 시간 포맷 지정
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H");
-
-        // 연월일과 시로 변환
-        String date = now.format(dateFormatter);
-        String hour = now.format(timeFormatter);
-
-        List<String[]> predictData= predictionService.runPy(date,hour);
-
-        predictionService.updateTraffic(predictData);
 
         // Join을 통해 road 테이블에서 traffic 값을 가져와서 정렬
         searchList.sort(Comparator.comparingInt(search -> getTrafficValueFromRoadTable(search.getTourId())));

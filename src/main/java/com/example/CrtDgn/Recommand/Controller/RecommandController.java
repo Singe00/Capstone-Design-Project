@@ -1,6 +1,8 @@
 package com.example.CrtDgn.Recommand.Controller;
 
+import com.example.CrtDgn.Recommand.Domain.Road;
 import com.example.CrtDgn.Recommand.Dto.RecommandDto;
+import com.example.CrtDgn.Recommand.Repository.RoadRepository;
 import com.example.CrtDgn.Recommand.Service.PredictionService;
 import com.example.CrtDgn.Search.Domain.Search;
 import com.example.CrtDgn.Search.Dto.ChargeDto;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -24,12 +27,15 @@ public class RecommandController {
     @Autowired
     private final SearchRepository searchRepository;
 
+    @Autowired
+    private  final RoadRepository roadRepository;
+
     @PostMapping("/recommand")
-    public List<Search> Recommand(@RequestBody List<RecommandDto> recommandDto) {
+    public List<Search> Recommand() {
 
-        List<String[]> predictData= predictionService.runPy(recommandDto.get(0).getBaseDate(),recommandDto.get(0).getBaseHour());
-        predictionService.updateTraffic(predictData);
+        List<Road> roads = roadRepository.findByTrafficEquals(0);
+        List<Integer> tourIds = roads.stream().map(Road::getTid).collect(Collectors.toList());
 
-        return predictionService.recommandPlace();
+        return searchRepository.findAllById(tourIds);
     }
 }
