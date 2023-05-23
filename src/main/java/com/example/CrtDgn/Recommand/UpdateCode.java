@@ -17,6 +17,9 @@ public class UpdateCode {
 
     @Scheduled(cron = "0 0 * * * *") // 매시간 00분마다 혼잡도 업데이트
     public void printCurrentTime() {
+        
+        System.out.println("혼잡도 업데이트 중");
+        
         // 현재 시간 가져오기
         LocalDateTime now = LocalDateTime.now();
 
@@ -26,12 +29,14 @@ public class UpdateCode {
         // 시간 포맷 지정
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H");
 
+
         // 연월일과 시로 변환
         String date = now.format(dateFormatter);
         String hour = now.format(timeFormatter);
-
+        System.out.println("입력값 : " + date+" / "+hour);
         List<String[]> predictData= predictionService.runPy(date,hour);
 
         predictionService.updateTraffic(predictData);
+        System.out.println("혼잡도 업데이트 완료");
     }
 }

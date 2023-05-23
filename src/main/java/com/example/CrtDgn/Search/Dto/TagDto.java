@@ -12,4 +12,7 @@ import lombok.Setter;
 public class TagDto {
     private String email;
     private String tag;
+    private String option;
+    private String latitude;
+    private String longitude;
 }
