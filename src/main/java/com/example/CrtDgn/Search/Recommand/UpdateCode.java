@@ -1,6 +1,6 @@
-package com.example.CrtDgn.Recommand;
+package com.example.CrtDgn.Search.Recommand;
 
-import com.example.CrtDgn.Recommand.Service.PredictionService;
+import com.example.CrtDgn.Search.Recommand.Service.PredictionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

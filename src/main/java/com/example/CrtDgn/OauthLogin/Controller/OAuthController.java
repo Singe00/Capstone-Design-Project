@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -66,6 +67,16 @@ public class OAuthController {
 
             memberRepository.save(member);
 
+            List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
+
+            if (!jwtL.isEmpty()){
+                for (JwtDomain jd : jwtL){
+                    if (!jwtTokenProvider.validateToken(jd.getToken())){
+                        jwtRepository.delete(jd);
+                    }
+                }
+            }
+
             // 로그인에 성공하면 email, roles 로 토큰 생성 후 반환
             String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles(),"kakao",access_Token.getAccessToken());
 
@@ -109,6 +120,16 @@ public class OAuthController {
             }
 
             memberRepository.save(member);
+
+            List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
+
+            if (!jwtL.isEmpty()){
+                for (JwtDomain jd : jwtL){
+                    if (!jwtTokenProvider.validateToken(jd.getToken())){
+                        jwtRepository.delete(jd);
+                    }
+                }
+            }
 
             // 로그인에 성공하면 email, roles로 토큰 생성 후 반환
             String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles(), "naver", access_Token.getAccessToken());

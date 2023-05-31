@@ -1,4 +1,4 @@
-package com.example.CrtDgn.Recommand.Domain;
+package com.example.CrtDgn.Search.Recommand.Domain;
 
 import com.example.CrtDgn.Search.Domain.Search;
 import lombok.*;

@@ -1,10 +1,8 @@
 package com.example.CrtDgn;
 
-import com.example.CrtDgn.Login.Dto.MemberDto;
 import com.example.CrtDgn.Login.Service.MemberService;
-import com.example.CrtDgn.Recommand.Service.PredictionService;
+import com.example.CrtDgn.Search.Recommand.Service.PredictionService;
 import com.example.CrtDgn.Search.Controller.SearchController;
-import com.example.CrtDgn.Search.Domain.Search;
 import com.example.CrtDgn.Search.Dto.SearchDto;
 import com.example.CrtDgn.Search.Dto.TagDto;
 import org.junit.jupiter.api.Test;

@@ -1,10 +1,8 @@
-package com.example.CrtDgn.Recommand.Repository;
+package com.example.CrtDgn.Search.Recommand.Repository;
 
-import com.example.CrtDgn.Recommand.Domain.Road;
-import com.example.CrtDgn.Search.Domain.Search3;
+import com.example.CrtDgn.Search.Recommand.Domain.Road;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +20,9 @@ public interface RoadRepository extends JpaRepository<Road,Long> {
             "FROM Search3 t " +
             "JOIN Road r ON t.tourId = r.tid")
     List<Object[]> getTourWithTraffic();
+
+    @Query("SELECT t.tourId, t.title, t.roadaddress, t.latitude, t.longitude, t.phoneno, t.tag, t.introduction, t.imagepath, r.traffic, r.roadid " +
+            "FROM Search3 t " +
+            "JOIN Road r ON t.tourId = r.tid")
+    List<Object[]> getTourWithTraffic2();
 }

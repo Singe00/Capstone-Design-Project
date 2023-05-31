@@ -15,4 +15,5 @@ public class TagDto {
     private String option;
     private String latitude;
     private String longitude;
+
 }

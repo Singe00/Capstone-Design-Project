@@ -124,4 +124,5 @@ public class Search2 {
     public void setInterested(String interested) {
         this.interested = interested;
     }
+
 }

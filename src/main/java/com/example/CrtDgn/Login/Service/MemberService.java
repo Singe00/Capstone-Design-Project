@@ -43,6 +43,7 @@ public class MemberService {
     Member member = new Member();
     MemberDto memberDto = new MemberDto();
 
+/*
     public String signup(MemberDto request){
         if (memberRepository.findByEmail(request.getEmail()).isPresent())
         {
@@ -77,6 +78,7 @@ public class MemberService {
             return "존재하지 않는 아이디입니다.";
         }
     }
+*/
 
     public boolean isLoggedIn(String userEmail) {
         return loggedInUsers.contains(userEmail);
@@ -127,6 +129,18 @@ public class MemberService {
             System.out.println("잘못된 비밀번호입니다.");
             return "잘못된 비밀번호입니다.";
         }
+
+        List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
+
+        if (!jwtL.isEmpty()){
+            for (JwtDomain jd : jwtL){
+                if (!jwtTokenProvider.validateToken(jd.getToken())){
+                    jwtRepository.delete(jd);
+                }
+            }
+        }
+
+
         // 로그인에 성공하면 email, roles 로 토큰 생성 후 반환
         String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles(),"default","default");
 

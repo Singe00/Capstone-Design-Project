@@ -27,7 +27,7 @@ public class ChargeController {
         double longitude = chargeDto.getLongitude();
         System.out.println(chargeDto.getLatitude());
         System.out.println(chargeDto.getLongitude());
-        double[] distances = { 0.3, 0.6, 0.9, 1.2,1.5,1.8,2.1 }; // 주변 거리 범위 (단위: km)
+        double[] distances = { 0.3, 0.6, 0.9, 1.2,1.5,1.8,2.1,355.0 }; // 주변 거리 범위 (단위: km)
 
         List<Charge> nearbyChargeStations = new ArrayList<>();
 

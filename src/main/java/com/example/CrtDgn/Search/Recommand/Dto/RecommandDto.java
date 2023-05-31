@@ -1,4 +1,4 @@
-package com.example.CrtDgn.Recommand.Dto;
+package com.example.CrtDgn.Search.Recommand.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

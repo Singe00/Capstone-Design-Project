@@ -1,8 +1,7 @@
-package com.example.CrtDgn.Recommand.Service;
+package com.example.CrtDgn.Search.Recommand.Service;
 
-import com.example.CrtDgn.Recommand.Domain.Road;
-import com.example.CrtDgn.Recommand.Dto.RecommandDto;
-import com.example.CrtDgn.Recommand.Repository.RoadRepository;
+import com.example.CrtDgn.Search.Recommand.Domain.Road;
+import com.example.CrtDgn.Search.Recommand.Repository.RoadRepository;
 import com.example.CrtDgn.Search.Domain.Search;
 import com.example.CrtDgn.Search.Repository.SearchRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +14,6 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.springframework.util.ResourceUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;

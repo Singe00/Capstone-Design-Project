@@ -1,8 +1,8 @@
 package com.example.CrtDgn.Search.Controller;
 
-import com.example.CrtDgn.Recommand.Domain.Road;
-import com.example.CrtDgn.Recommand.Repository.RoadRepository;
-import com.example.CrtDgn.Recommand.Service.PredictionService;
+import com.example.CrtDgn.Search.Recommand.Domain.Road;
+import com.example.CrtDgn.Search.Recommand.Repository.RoadRepository;
+import com.example.CrtDgn.Search.Recommand.Service.PredictionService;
 import com.example.CrtDgn.Search.Domain.Search;
 import com.example.CrtDgn.Search.Domain.Search2;
 import com.example.CrtDgn.Search.Dto.SearchDto;
@@ -11,18 +11,10 @@ import com.example.CrtDgn.Search.Repository.SearchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -57,29 +49,32 @@ public class SearchController {
     @PostMapping("/search/title")
     public List<Search2> searchToursByTitle(@RequestBody List<SearchDto> searchDtoList) {
         System.out.println("관광지 검색 요청");
+        System.out.println(searchDtoList.get(0).getTitle());
         String email = searchDtoList.get(0).getEmail();
         String title = searchDtoList.get(0).getTitle();
+        String tag = searchDtoList.get(0).getTitle();
         String option = searchDtoList.get(0).getOption();
 
-        List<Object[]> result = searchRepository.getTourWithInterestByTitle(email, title);
+        List<Object[]> titleResult = searchRepository.getTourWithInterestByTitle(email, title);
+        List<Object[]> tagResult = searchRepository.getTourWithInterestByTag(email, tag);
+
         List<Search2> searchList = new ArrayList<>();
 
-        for (Object[] row : result) {
-            Search2 search = Search2.builder()
-                    .tourId((Long) row[0])
-                    .title((String) row[1])
-                    .roadaddress((String) row[2])
-                    .latitude((double) row[3])
-                    .longitude((double) row[4])
-                    .phoneno((String) row[5])
-                    .tag((String) row[6])
-                    .introduction((String) row[7])
-                    .imagepath((String) row[8])
-                    .interested(((Integer) row[9]).toString()) // 관심 여부를 문자열로 변환하여 설정
-                    .build();
+        for (Object[] row : titleResult) {
+            Search2 search = createSearchFromRow(row);
             searchList.add(search);
         }
 
+        for (Object[] row : tagResult) {
+            Search2 search = createSearchFromRow(row);
+
+            boolean isDuplicate = searchList.stream()
+                    .anyMatch(s -> s.getTitle().equals(search.getTitle()));
+
+            if (!isDuplicate) {
+                searchList.add(search);
+            }
+        }
 
         if (option.equals("1")){ //혼잡도 순 정렬
             // traffic 값을 기준으로 searchList 오름차순 정렬
@@ -97,13 +92,26 @@ public class SearchController {
             });
         }
 
-
-
-
         return searchList;
 //        return searchRepository.findAllByTitleContaining(searchDtoList.get(0).getTitle());
     }
 
+    private Search2 createSearchFromRow(Object[] row) {
+        return Search2.builder()
+                .tourId((Long) row[0])
+                .title((String) row[1])
+                .roadaddress((String) row[2])
+                .latitude((double) row[3])
+                .longitude((double) row[4])
+                .phoneno((String) row[5])
+                .tag((String) row[6])
+                .introduction((String) row[7])
+                .imagepath((String) row[8])
+                .interested(((Integer) row[9]).toString()) // 관심 여부를 문자열로 변환하여 설정
+                .build();
+    }
+
+/*
     @PostMapping("/search/tag")
     public List<Search2> searchToursByTag(@RequestBody List<TagDto> searchDtoList) {
         System.out.println("관광지 검색 요청");
@@ -149,6 +157,7 @@ public class SearchController {
         return searchList;
 //        return searchRepository.findAllByTitleContaining(searchDtoList.get(0).getTitle());
     }
+*/
 
     private int getTrafficValueFromRoadTable(Long tourId) {
         // road 테이블에서 tourId를 사용하여 traffic 값을 가져오는 로직을 구현해야 함
@@ -177,4 +186,5 @@ public class SearchController {
         double distance = EARTH_RADIUS * c; // 두 지점 사이의 거리 (단위: km)
         return distance;
     }
+
 }

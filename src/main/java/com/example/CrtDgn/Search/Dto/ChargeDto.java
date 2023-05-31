@@ -12,4 +12,5 @@ import lombok.Setter;
 public class ChargeDto {
     private double latitude;
     private double longitude;
+
 }
