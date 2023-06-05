@@ -64,7 +64,15 @@ public class OAuthController {
             } else if (member != null && member.getPlatform().equals("default")) {
                 member.setPlatform("kakao");
                 member.setPassword(passwordEncoder.encode(access_Token.getAccessToken()));
-            } else {
+            } else if (member != null && member.getPlatform().equals("naver")) {
+                // 새로운 사용자인 경우 회원 정보 저장
+                member = Member.builder()
+                        .email(email)
+                        .password(passwordEncoder.encode(access_Token.getAccessToken()))
+                        .platform("kakao")
+                        .roles(Collections.singletonList("ROLE_USER"))
+                        .build();
+            }else {
                 // 이미 등록된 사용자인 경우 Access Token 업데이트
                 member.setPassword(passwordEncoder.encode(access_Token.getAccessToken()));
             }
@@ -121,12 +129,21 @@ public class OAuthController {
             } else if (member != null && member.getPlatform().equals("default")) {
                 member.setPlatform("naver");
                 member.setPassword(passwordEncoder.encode(access_Token.getAccessToken()));
+            } else if (member != null && member.getPlatform().equals("kakao")) {
+                // 새로운 사용자인 경우 회원 정보 저장
+                member = Member.builder()
+                        .email(email)
+                        .password(passwordEncoder.encode(access_Token.getAccessToken()))
+                        .platform("naver")
+                        .roles(Collections.singletonList("ROLE_USER"))
+                        .build();
             } else {
                 // 이미 등록된 사용자인 경우 Access Token 업데이트
                 member.setPassword(passwordEncoder.encode(access_Token.getAccessToken()));
             }
 
             memberRepository.save(member);
+
 
             List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
             if (!jwtL.isEmpty()){
