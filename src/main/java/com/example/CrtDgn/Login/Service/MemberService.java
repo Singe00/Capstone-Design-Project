@@ -84,17 +84,6 @@ public class MemberService {
         return loggedInUsers.contains(userEmail);
     }
 
-    // 로그인된 사용자 정보를 추가하는 메소드
-    public void addLoggedInUser(String userEmail) {
-        loggedInUsers.add(userEmail);
-    }
-
-    // 로그인된 사용자 정보를 제거하는 메소드
-    public void removeLoggedInUser(String userEmail) {
-        loggedInUsers.remove(userEmail);
-    }
-
-
     @Transactional
     public String join(MemberDto memberDto){
         Member m = memberRepository.findMByEmail(memberDto.getEmail());
@@ -120,18 +109,25 @@ public class MemberService {
     @Transactional
     public String login2(MemberDto memberDto){
 
+        Member m =memberRepository.findMByEmail(memberDto.getEmail());
+        JwtDomain jwtd = jwtRepository.findByUserId(m.getId());
+
         Member member = memberRepository.findByEmail(memberDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
 
-        System.out.println("비번 : "+memberDto.getPassword());
-        System.out.println("비번 : "+member.getPassword());
         if (!passwordEncoder.matches(memberDto.getPassword(), member.getPassword())) {
             System.out.println("잘못된 비밀번호입니다.");
-            return "잘못된 비밀번호입니다.";
+            return "fail";
         }
 
-        List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
+        if (jwtd != null){
+            if (jwtTokenProvider.validateToken(jwtd.getToken())){
+                return jwtd.getToken();
+            }
+        }
 
+
+        List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
         if (!jwtL.isEmpty()){
             for (JwtDomain jd : jwtL){
                 if (!jwtTokenProvider.validateToken(jd.getToken())){
@@ -139,7 +135,6 @@ public class MemberService {
                 }
             }
         }
-
 
         // 로그인에 성공하면 email, roles 로 토큰 생성 후 반환
         String token = jwtTokenProvider.createToken(member.getUsername(), member.getRoles(),"default","default");
@@ -151,7 +146,6 @@ public class MemberService {
 
         jwtRepository.save(jwtDomain);
 
-        addLoggedInUser(member.getEmail());
         return token;
     }
 

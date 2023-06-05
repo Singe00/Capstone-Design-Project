@@ -36,9 +36,6 @@ public class JwtCheck {
             for (JwtDomain jd : jwtL){
                 if (!jwtTokenProvider.validateToken(jd.getToken())){
                     jwtRepository.delete(jd);
-                    Optional<Member> member = memberRepository.findById(jd.getUserId());
-
-                    memberService.removeLoggedInUser(member.get().getEmail());
 
                 }
             }

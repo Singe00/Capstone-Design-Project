@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface JwtRepository extends JpaRepository<JwtDomain,Long> {
     JwtDomain findByToken(String token);
 
+    JwtDomain findByUserId(long uid);
+
     List<JwtDomain> findAllByUserId(long uid);
 }

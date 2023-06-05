@@ -33,13 +33,14 @@ public class MemberController {
     @PostMapping("/login2")
     public String login(@RequestBody MemberDto memberDto) {
         System.out.println("로그인 요청");
-        if (memberService.isLoggedIn(memberDto.getEmail()))
-        {
-            System.out.println("이미 로그인 되어 있습니다.");
+
+        String s = memberService.login2(memberDto);
+        if (s.equals("fail")){
             return "fail";
         }
-
-        return memberService.login2(memberDto);
+        else{
+            return memberService.login2(memberDto);
+        }
     }
 
     @PostMapping("/find")

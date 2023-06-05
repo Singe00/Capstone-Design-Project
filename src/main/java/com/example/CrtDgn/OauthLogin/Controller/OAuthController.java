@@ -52,6 +52,7 @@ public class OAuthController {
 
             Member member = memberRepository.findMByEmail(email);
 
+
             if (member == null) {
                 // 새로운 사용자인 경우 회원 정보 저장
                 member = Member.builder()
@@ -60,12 +61,23 @@ public class OAuthController {
                         .platform("kakao")
                         .roles(Collections.singletonList("ROLE_USER"))
                         .build();
+            } else if (member != null && member.getPlatform().equals("default")) {
+                member.setPlatform("kakao");
+                member.setPassword(passwordEncoder.encode(access_Token.getAccessToken()));
             } else {
                 // 이미 등록된 사용자인 경우 Access Token 업데이트
                 member.setPassword(passwordEncoder.encode(access_Token.getAccessToken()));
             }
 
             memberRepository.save(member);
+
+            JwtDomain jwtd = jwtRepository.findByUserId(member.getId());
+
+            if (jwtd!=null) {
+                if (jwtTokenProvider.validateToken(jwtd.getToken())) {
+                    return jwtd.getToken();
+                }
+            }
 
             List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
 
@@ -106,6 +118,7 @@ public class OAuthController {
 
             Member member = memberRepository.findMByEmail(email);
 
+
             if (member == null) {
                 // 새로운 사용자인 경우 회원 정보 저장
                 member = Member.builder()
@@ -114,6 +127,9 @@ public class OAuthController {
                         .platform("naver")
                         .roles(Collections.singletonList("ROLE_USER"))
                         .build();
+            } else if (member != null && member.getPlatform().equals("default")) {
+                member.setPlatform("naver");
+                member.setPassword(passwordEncoder.encode(access_Token.getAccessToken()));
             } else {
                 // 이미 등록된 사용자인 경우 Access Token 업데이트
                 member.setPassword(passwordEncoder.encode(access_Token.getAccessToken()));
@@ -121,8 +137,14 @@ public class OAuthController {
 
             memberRepository.save(member);
 
-            List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
+            JwtDomain jwtd = jwtRepository.findByUserId(member.getId());
+            if (jwtd != null) {
+                if (jwtTokenProvider.validateToken(jwtd.getToken())) {
+                    return jwtd.getToken();
+                }
+            }
 
+            List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
             if (!jwtL.isEmpty()){
                 for (JwtDomain jd : jwtL){
                     if (!jwtTokenProvider.validateToken(jd.getToken())){
@@ -197,17 +219,11 @@ public class OAuthController {
         if (platform.equals("default")) {
             // 로그인된 사용자인지 확인
             String userEmail = op.get().getEmail();
-            if (memberService.isLoggedIn(userEmail)) {
-                memberService.removeLoggedInUser(userEmail); // 로그인된 사용자 정보 제거
-                jwtRepository.delete(jd);
 
-                System.out.println("일반 로그아웃 성공");
-                return "success"; // 로그아웃 성공
-            }
-            else {
-                System.out.println("일반 로그아웃 실패");
-                return "fail"; // 로그아웃 실패 (로그인되지 않은 사용자)
-            }
+            jwtRepository.delete(jd);
+
+            System.out.println("일반 로그아웃 성공");
+            return "success"; // 로그아웃 성공
         }
         else {
             if (platform.equals("kakao")) {
