@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ChargeRepository extends JpaRepository<Charge,Long> {
     List<Charge> findByLatitudeBetweenAndLongitudeBetween(double minLatitude, double maxLatitude, double minLongitude, double maxLongitude);
+
+
 }

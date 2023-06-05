@@ -39,4 +39,6 @@ public class UpdateCode {
         predictionService.updateTraffic(predictData);
         System.out.println("혼잡도 업데이트 완료");
     }
+
+
 }

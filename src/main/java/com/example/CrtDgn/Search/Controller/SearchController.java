@@ -28,9 +28,6 @@ public class SearchController {
     @Autowired
     private final RoadRepository roadRepository;
 
-    @Autowired
-    private final PredictionService predictionService;
-
     @GetMapping("/main")
     public List<Search> BestPlace(){
         System.out.println("대표 관광지 정보 요청");
@@ -186,5 +183,7 @@ public class SearchController {
         double distance = EARTH_RADIUS * c; // 두 지점 사이의 거리 (단위: km)
         return distance;
     }
+
+
 
 }

@@ -1,7 +1,11 @@
 package com.example.CrtDgn.Search.Controller;
 
 import com.example.CrtDgn.Search.Domain.Charge;
+import com.example.CrtDgn.Search.Domain.Charge2;
+import com.example.CrtDgn.Search.Domain.Search3;
 import com.example.CrtDgn.Search.Dto.ChargeDto;
+import com.example.CrtDgn.Search.Recommand.Domain.Road2;
+import com.example.CrtDgn.Search.Recommand.Repository.Road2Repository;
 import com.example.CrtDgn.Search.Repository.ChargeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +24,17 @@ public class ChargeController {
     @Autowired
     private final ChargeRepository chargeRepository;
 
+    @Autowired
+    private final Road2Repository road2Repository;
+
+
     @GetMapping("/charge/coordinate")
-    public List<Charge> ChargePlace(@RequestBody ChargeDto chargeDto){
+    public List<Charge2> ChargePlace(@RequestBody List<ChargeDto> chargeDto){
         System.out.println("충전소 검색 요청");
-        double latitude = chargeDto.getLatitude();
-        double longitude = chargeDto.getLongitude();
-        System.out.println(chargeDto.getLatitude());
-        System.out.println(chargeDto.getLongitude());
+        double latitude = chargeDto.get(0).getLatitude();
+        double longitude = chargeDto.get(0).getLongitude();
+        System.out.println(chargeDto.get(0).getLatitude());
+        System.out.println(chargeDto.get(0).getLongitude());
         double[] distances = { 0.3, 0.6, 0.9, 1.2,1.5,1.8,2.1,355.0 }; // 주변 거리 범위 (단위: km)
 
         List<Charge> nearbyChargeStations = new ArrayList<>();
@@ -48,6 +56,37 @@ public class ChargeController {
             }
         }
 
-        return nearbyChargeStations;
+        List<Charge2> cl = new ArrayList<>();
+        List<Charge2> cl2 = new ArrayList<>();
+        List<Object[]> result = road2Repository.getChargeWithTraffic();
+
+        for (Object[] row : result) {
+            Charge2 charge2 = Charge2.builder()
+                    .chargeid((Long) row[0])
+                    .chargingplace((String) row[1])
+                    .chargingplacedetail((String) row[2])
+                    .address((String) row[3])
+                    .latitude((double) row[4])
+                    .longitude((double) row[5])
+                    .chargingflag((String) row[6])
+                    .quickchargingflag((String) row[7])
+                    .chargercount((String) row[8])
+                    .quickchargercount((String) row[9])
+                    .parkingfeeflag((String) row[10])
+                    .traffic(((Integer) row[11]).toString()) // 관심 여부를 문자열로 변환하여 설정
+                    .build();
+            cl.add(charge2);
+        }
+
+        for (Charge l1:nearbyChargeStations){
+            for (Charge2 l2:cl){
+                if (l1.getChargeid().equals(l2.getChargeid())){
+                    cl2.add(l2);
+                    break;
+                }
+            }
+        }
+
+        return cl2;
     }
 }

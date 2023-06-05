@@ -1,6 +1,8 @@
 package com.example.CrtDgn.Search.Recommand.Service;
 
 import com.example.CrtDgn.Search.Recommand.Domain.Road;
+import com.example.CrtDgn.Search.Recommand.Domain.Road2;
+import com.example.CrtDgn.Search.Recommand.Repository.Road2Repository;
 import com.example.CrtDgn.Search.Recommand.Repository.RoadRepository;
 import com.example.CrtDgn.Search.Domain.Search;
 import com.example.CrtDgn.Search.Repository.SearchRepository;
@@ -33,6 +35,9 @@ public class PredictionService {
     @Autowired
     private RoadRepository roadRepository;
 
+    @Autowired
+    private Road2Repository roadRepository2;
+
     public List<String[]> runPy(String base_date,String base_hour)  {
         System.out.println("Python Call");
         String[] command = new String[4];
@@ -48,6 +53,7 @@ public class PredictionService {
         System.out.println("예측값 생성 오류 발생!");
         return null;
     }
+
 
     public static List<String[]> execPython(String[] command) throws IOException, InterruptedException {
         CommandLine commandLine = CommandLine.parse(command[0]);
@@ -150,29 +156,28 @@ public class PredictionService {
             String[] data = predictData.get(i);
 
             List<Road> roads = roadRepository.findAllByRoadid(Integer.parseInt(data[0]));
+            List<Road2> road2s = roadRepository2.findAllByRoadid(Integer.parseInt(data[0]));
 
             if (roads != null){
                 for (Road road : roads) {
                     road.setTraffic(Integer.parseInt(data[3]));
                     roadRepository.save(road);
                 }
+
+                for(Road2 road2:road2s){
+                    road2.setTraffic(Integer.parseInt(data[3]));
+                    roadRepository2.save(road2);
+                }
+            }
+
+            if (road2s != null){
+                for(Road2 road2:road2s){
+                    road2.setTraffic(Integer.parseInt(data[3]));
+                    roadRepository2.save(road2);
+                }
             }
 
         }
     }
 
-    public List<Search> recommandPlace(){
-        List<Road> zeroRoad = roadRepository.findAllByTraffic(0);
-
-        List<Search> zeroTour = new ArrayList<>();
-
-        for (Road road:zeroRoad){
-            int tid = road.getTid();
-            Search search = searchRepository.findByTourid(tid);
-            if (search!=null){
-                zeroTour.add(search);
-            }
-        }
-        return zeroTour;
-    }
 }

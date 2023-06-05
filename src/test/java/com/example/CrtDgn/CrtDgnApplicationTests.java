@@ -1,14 +1,25 @@
 package com.example.CrtDgn;
 
 import com.example.CrtDgn.Login.Service.MemberService;
+import com.example.CrtDgn.Search.Controller.ChargeController;
+import com.example.CrtDgn.Search.Domain.Charge;
+import com.example.CrtDgn.Search.Domain.Charge2;
+import com.example.CrtDgn.Search.Domain.Search;
+import com.example.CrtDgn.Search.Dto.ChargeDto;
+import com.example.CrtDgn.Search.Recommand.Domain.Road;
+import com.example.CrtDgn.Search.Recommand.Domain.Road2;
+import com.example.CrtDgn.Search.Recommand.Repository.Road2Repository;
 import com.example.CrtDgn.Search.Recommand.Service.PredictionService;
 import com.example.CrtDgn.Search.Controller.SearchController;
 import com.example.CrtDgn.Search.Dto.SearchDto;
 import com.example.CrtDgn.Search.Dto.TagDto;
+import com.example.CrtDgn.Search.Repository.ChargeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,47 +35,28 @@ class CrtDgnApplicationTests {
 	@Autowired
 	private PredictionService predictionService;
 
+	@Autowired
+	private ChargeRepository chargeRepository;
+
+	@Autowired
+	private ChargeController chargeController;
 
 
-	@Test
-	void Predict(){
-        List<String[]> predictData= predictionService.runPy("20230517","5");
-
-		predictionService.updateTraffic(predictData);
-
-
-	}
-
-	@Test
-	void SearchTitle(){
-		List<SearchDto> searchDto = new ArrayList<>();
-		SearchDto sd = new SearchDto();
-
-		sd.setEmail("singery00@naver.com");
-		sd.setTitle("숲");
-
-		searchDto.add(sd);
-
-		searchController.searchToursByTitle(searchDto);
-
-
-	}
+	@Autowired
+	private Road2Repository road2Repository;
 
 	@Test
-	void SearchTag(){
-		List<TagDto> tagDtos = new ArrayList<>();
-		TagDto td = new TagDto();
+	List<Charge2> t (){
+		List<ChargeDto> chargeDto = new ArrayList<>();
 
-		td.setEmail("singery00@naver.com");
-		td.setTag("중국집");
+		ChargeDto c = new ChargeDto();
 
-		tagDtos.add(td);
+		c.setLatitude(33.49);
+		c.setLongitude(126.51);
 
-		searchController.searchToursByTag(tagDtos);
+		chargeDto.add(c);
 
-
+		return 	chargeController.ChargePlace(chargeDto);
 	}
 
 }
-
-
