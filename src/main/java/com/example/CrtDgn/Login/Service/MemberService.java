@@ -109,9 +109,6 @@ public class MemberService {
     @Transactional
     public String login2(MemberDto memberDto){
 
-        Member m =memberRepository.findMByEmail(memberDto.getEmail());
-        JwtDomain jwtd = jwtRepository.findByUserId(m.getId());
-
         Member member = memberRepository.findByEmail(memberDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
 
@@ -120,19 +117,10 @@ public class MemberService {
             return "fail";
         }
 
-        if (jwtd != null){
-            if (jwtTokenProvider.validateToken(jwtd.getToken())){
-                return jwtd.getToken();
-            }
-        }
-
-
         List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
         if (!jwtL.isEmpty()){
             for (JwtDomain jd : jwtL){
-                if (!jwtTokenProvider.validateToken(jd.getToken())){
-                    jwtRepository.delete(jd);
-                }
+                jwtRepository.delete(jd);
             }
         }
 

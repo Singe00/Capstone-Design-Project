@@ -39,7 +39,7 @@ public class MemberController {
             return "fail";
         }
         else{
-            return memberService.login2(memberDto);
+            return s;
         }
     }
 

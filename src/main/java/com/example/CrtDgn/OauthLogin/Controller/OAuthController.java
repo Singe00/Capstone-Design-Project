@@ -71,21 +71,12 @@ public class OAuthController {
 
             memberRepository.save(member);
 
-            JwtDomain jwtd = jwtRepository.findByUserId(member.getId());
-
-            if (jwtd!=null) {
-                if (jwtTokenProvider.validateToken(jwtd.getToken())) {
-                    return jwtd.getToken();
-                }
-            }
 
             List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
 
             if (!jwtL.isEmpty()){
                 for (JwtDomain jd : jwtL){
-                    if (!jwtTokenProvider.validateToken(jd.getToken())){
-                        jwtRepository.delete(jd);
-                    }
+                    jwtRepository.delete(jd);
                 }
             }
 
@@ -137,19 +128,10 @@ public class OAuthController {
 
             memberRepository.save(member);
 
-            JwtDomain jwtd = jwtRepository.findByUserId(member.getId());
-            if (jwtd != null) {
-                if (jwtTokenProvider.validateToken(jwtd.getToken())) {
-                    return jwtd.getToken();
-                }
-            }
-
             List<JwtDomain> jwtL = jwtRepository.findAllByUserId(member.getId());
             if (!jwtL.isEmpty()){
                 for (JwtDomain jd : jwtL){
-                    if (!jwtTokenProvider.validateToken(jd.getToken())){
-                        jwtRepository.delete(jd);
-                    }
+                    jwtRepository.delete(jd);
                 }
             }
 
