@@ -50,7 +50,7 @@ public class OAuthController {
         if (userInfo.get("email") != null) {
             String email = userInfo.get("email").toString();
 
-            Member member = memberRepository.findMByEmail(email);
+            Member member = memberRepository.findMByEP(email,"kakao");
 
 
             if (member == null) {
@@ -115,7 +115,7 @@ public class OAuthController {
         if (userInfo.get("email") != null) {
             String email = userInfo.get("email").toString();
 
-            Member member = memberRepository.findMByEmail(email);
+            Member member = memberRepository.findMByEP(email,"naver");
 
 
             if (member == null) {

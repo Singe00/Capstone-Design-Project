@@ -31,10 +31,11 @@ public class ChargeController {
     @GetMapping("/charge/coordinate")
     public List<Charge2> ChargePlace(@RequestBody List<ChargeDto> chargeDto){
         System.out.println("충전소 검색 요청");
-        double latitude = chargeDto.get(0).getLatitude();
-        double longitude = chargeDto.get(0).getLongitude();
         System.out.println(chargeDto.get(0).getLatitude());
         System.out.println(chargeDto.get(0).getLongitude());
+        double latitude = chargeDto.get(0).getLatitude();
+        double longitude = chargeDto.get(0).getLongitude();
+
         double[] distances = { 0.3, 0.6, 0.9, 1.2,1.5,1.8,2.1,355.0 }; // 주변 거리 범위 (단위: km)
 
         List<Charge> nearbyChargeStations = new ArrayList<>();
