@@ -204,7 +204,7 @@ public class MemberService {
 
     public boolean sendRandomPasswordByEmail(String email, String temporaryPassword) {
         // 회원 비밀번호 업데이트 로직
-        Member member = memberRepository.findMByEmail(email);
+        Member member = memberRepository.findMByEP(email,"default");
 
         if (member==null){
             System.out.println("가입되지 않은 회원입니다!");
