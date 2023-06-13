@@ -1,19 +1,20 @@
 package com.example.CrtDgn.Search.Recommand.Controller;
 
+import com.example.CrtDgn.Search.Domain.Search;
 import com.example.CrtDgn.Search.Recommand.Domain.Road;
 import com.example.CrtDgn.Search.Recommand.Dto.RecommandDto;
 import com.example.CrtDgn.Search.Recommand.Repository.RoadRepository;
 import com.example.CrtDgn.Search.Domain.Search3;
 import com.example.CrtDgn.Search.Recommand.Service.PredictionService;
+import com.example.CrtDgn.Search.Repository.SearchRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -26,6 +27,9 @@ public class RecommandController {
 
     @Autowired
     private final PredictionService predictionService;
+
+    @Autowired
+    private final SearchRepository searchRepository;
 
     @PostMapping("/recommand")
     public List<Search3> Recommand() {
@@ -60,9 +64,11 @@ public class RecommandController {
     @PostMapping("/recommand2")
     public List<Search3> Recommand2(@RequestBody List<RecommandDto> recommandDto) {
 
+        String title = recommandDto.get(0).getTitle();
         String baseDate = recommandDto.get(0).getBaseDate();
         String baseHour = recommandDto.get(0).getBaseHour();
 
+        System.out.println(title);
         System.out.println(baseDate);
         System.out.println(baseHour);
 
@@ -100,6 +106,32 @@ public class RecommandController {
         // traffic 값을 기준으로 정렬
         tours.sort(Comparator.comparingInt(s -> Integer.parseInt(s.getTraffic())));
 
-        return tours;
+
+        List<Search> sl1 = searchRepository.findAllByTitleContaining(title);
+        List<Search> sl2 = searchRepository.findAllByTagContaining(title);
+
+        List<Integer> idL = new ArrayList<>();
+
+        for (Search s :sl1){
+            idL.add(s.getTourid());
+        }
+
+        for (Search s :sl2){
+            idL.add(s.getTourid());
+        }
+
+        // 중복 제거
+        List<Integer> newList = idL.stream().distinct().collect(Collectors.toList());
+        Set<Integer> newSet = new HashSet<>(newList);
+        List<Search3> filteredTours = new ArrayList<>();
+
+        for (Search3 tour : tours) {
+            long tourId = tour.getTourId();
+            if (newSet.contains((int) tourId)) {
+                filteredTours.add(tour);
+            }
+        }
+
+        return filteredTours;
     }
 }
