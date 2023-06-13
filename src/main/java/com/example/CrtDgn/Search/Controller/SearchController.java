@@ -36,11 +36,16 @@ public class SearchController {
         return list;
     }
 
-    @GetMapping("/search/detail")
-    public Search searchDetail(@RequestBody SearchDto searchDto){
+    @PostMapping("/search/detail")
+    public Search2 searchDetail(@RequestBody SearchDto searchDto){
         System.out.println("관광지 상세정보 요청");
-        Search detail = searchRepository.findByTourid(searchDto.getTourKey().intValue());
-        return detail;
+        List<Object[]> titleResult = searchRepository.getTourWithInterestByTitle(searchDto.getEmail(), searchDto.getTitle());
+        List<Search2> searchList = new ArrayList<>();
+        for (Object[] row : titleResult) {
+            Search2 search = createSearchFromRow(row);
+            searchList.add(search);
+        }
+        return searchList.get(0);
     }
 
     @PostMapping("/search/title")
@@ -49,6 +54,7 @@ public class SearchController {
         System.out.println(searchDtoList.get(0).getTitle());
         String email = searchDtoList.get(0).getEmail();
         String title = searchDtoList.get(0).getTitle();
+
         String tag = searchDtoList.get(0).getTitle();
         String option = searchDtoList.get(0).getOption();
 
@@ -183,7 +189,5 @@ public class SearchController {
         double distance = EARTH_RADIUS * c; // 두 지점 사이의 거리 (단위: km)
         return distance;
     }
-
-
 
 }

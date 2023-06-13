@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecommandDto {
+    private String title;
     private String baseDate;
     private String baseHour;
 }

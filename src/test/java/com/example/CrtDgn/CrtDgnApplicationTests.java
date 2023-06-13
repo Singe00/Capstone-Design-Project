@@ -5,6 +5,7 @@ import com.example.CrtDgn.Search.Controller.ChargeController;
 import com.example.CrtDgn.Search.Domain.Charge;
 import com.example.CrtDgn.Search.Domain.Charge2;
 import com.example.CrtDgn.Search.Domain.Search;
+import com.example.CrtDgn.Search.Domain.Search2;
 import com.example.CrtDgn.Search.Dto.ChargeDto;
 import com.example.CrtDgn.Search.Recommand.Domain.Road;
 import com.example.CrtDgn.Search.Recommand.Domain.Road2;
@@ -14,6 +15,7 @@ import com.example.CrtDgn.Search.Controller.SearchController;
 import com.example.CrtDgn.Search.Dto.SearchDto;
 import com.example.CrtDgn.Search.Dto.TagDto;
 import com.example.CrtDgn.Search.Repository.ChargeRepository;
+import com.example.CrtDgn.Search.Repository.SearchRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -45,18 +47,12 @@ class CrtDgnApplicationTests {
 	@Autowired
 	private Road2Repository road2Repository;
 
+	@Autowired
+	private SearchRepository searchRepository;
 	@Test
-	List<Charge2> t (){
-		List<ChargeDto> chargeDto = new ArrayList<>();
+	void t (){
 
-		ChargeDto c = new ChargeDto();
 
-		c.setLatitude(33.49);
-		c.setLongitude(126.51);
-
-		chargeDto.add(c);
-
-		return 	chargeController.ChargePlace(chargeDto);
 	}
 
 }
