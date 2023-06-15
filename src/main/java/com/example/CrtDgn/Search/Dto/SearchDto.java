@@ -17,4 +17,5 @@ public class SearchDto {
     private String longitude;
     private String sort;
     private String option;
+    private String token;
 }

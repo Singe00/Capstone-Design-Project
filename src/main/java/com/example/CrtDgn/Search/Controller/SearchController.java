@@ -1,5 +1,7 @@
 package com.example.CrtDgn.Search.Controller;
 
+import com.example.CrtDgn.Login.Domain.Member;
+import com.example.CrtDgn.Login.Repository.MemberRepository;
 import com.example.CrtDgn.Search.Recommand.Domain.Road;
 import com.example.CrtDgn.Search.Recommand.Repository.RoadRepository;
 import com.example.CrtDgn.Search.Recommand.Service.PredictionService;
@@ -8,6 +10,7 @@ import com.example.CrtDgn.Search.Domain.Search2;
 import com.example.CrtDgn.Search.Dto.SearchDto;
 import com.example.CrtDgn.Search.Dto.TagDto;
 import com.example.CrtDgn.Search.Repository.SearchRepository;
+import com.example.CrtDgn.Security.Jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,12 @@ public class SearchController {
     @Autowired
     private final RoadRepository roadRepository;
 
+    @Autowired
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private final MemberRepository memberRepository;
+
     @GetMapping("/main")
     public List<Search> BestPlace(){
         System.out.println("대표 관광지 정보 요청");
@@ -37,29 +46,36 @@ public class SearchController {
     }
 
     @PostMapping("/search/detail")
-    public Search2 searchDetail(@RequestBody SearchDto searchDto){
+    public List<Search2> searchDetail(@RequestBody List<SearchDto> searchDto){
         System.out.println("관광지 상세정보 요청");
-        List<Object[]> titleResult = searchRepository.getTourWithInterestByTitle(searchDto.getEmail(), searchDto.getTitle());
+
+        System.out.println(searchDto.get(0).getEmail());
+        System.out.println(searchDto.get(0).getTitle());
+        List<Object[]> titleResult = searchRepository.getTourWithInterestByTitle(searchDto.get(0).getEmail(), searchDto.get(0).getTitle());
         List<Search2> searchList = new ArrayList<>();
         for (Object[] row : titleResult) {
             Search2 search = createSearchFromRow(row);
             searchList.add(search);
         }
-        return searchList.get(0);
+        return searchList;
     }
 
     @PostMapping("/search/title")
     public List<Search2> searchToursByTitle(@RequestBody List<SearchDto> searchDtoList) {
         System.out.println("관광지 검색 요청");
+        System.out.println("토큰ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"+searchDtoList.get(0).getToken());
         System.out.println(searchDtoList.get(0).getTitle());
         String email = searchDtoList.get(0).getEmail();
         String title = searchDtoList.get(0).getTitle();
 
+        String token = searchDtoList.get(0).getToken();
         String tag = searchDtoList.get(0).getTitle();
         String option = searchDtoList.get(0).getOption();
 
-        List<Object[]> titleResult = searchRepository.getTourWithInterestByTitle(email, title);
-        List<Object[]> tagResult = searchRepository.getTourWithInterestByTag(email, tag);
+        String platform = jwtTokenProvider.getPlatform(token);
+
+        List<Object[]> titleResult = searchRepository.getTourWithInterestByTitle2(email,platform,title);
+        List<Object[]> tagResult = searchRepository.getTourWithInterestByTag(email,platform, tag);
 
         List<Search2> searchList = new ArrayList<>();
 

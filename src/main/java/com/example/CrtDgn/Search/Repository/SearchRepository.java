@@ -23,13 +23,19 @@ public interface SearchRepository extends JpaRepository<Search,Integer> {
             "WHERE t.title LIKE %:title%")
     List<Object[]> getTourWithInterestByTitle(@Param("email") String email, @Param("title") String title);
 
+    @Query("SELECT t.tourId, t.title, t.roadaddress, t.latitude, t.longitude, t.phoneno, t.tag, t.introduction, t.imagepath, " +
+            "CASE WHEN i.userId IS NOT NULL THEN 1 ELSE 0 END AS isInterested " +
+            "FROM Search2 t LEFT JOIN Interest i ON t.tourId = i.tourkey AND i.userId = " +
+            "(SELECT m.id FROM Member m WHERE m.email = :email AND m.platform =:plat) " +
+            "WHERE t.title LIKE %:title%")
+    List<Object[]> getTourWithInterestByTitle2(@Param("email") String email,@Param("plat") String plat, @Param("title") String title);
 
     @Query("SELECT t.tourId, t.title, t.roadaddress, t.latitude, t.longitude, t.phoneno, t.tag, t.introduction, t.imagepath, " +
             "CASE WHEN i.userId IS NOT NULL THEN 1 ELSE 0 END AS isInterested " +
             "FROM Search2 t LEFT JOIN Interest i ON t.tourId = i.tourkey AND i.userId = " +
-            "(SELECT m.id FROM Member m WHERE m.email = :email) " +
+            "(SELECT m.id FROM Member m WHERE m.email = :email AND m.platform =:plat) " +
             "WHERE t.tag LIKE %:tag%")
-    List<Object[]> getTourWithInterestByTag(@Param("email") String email, @Param("tag") String tag);
+    List<Object[]> getTourWithInterestByTag(@Param("email") String email, @Param("plat") String plat,@Param("tag") String tag);
 
     @Query("SELECT t.tourId, t.title, t.roadaddress, t.latitude, t.longitude, t.phoneno, t.tag, t.introduction, t.imagepath, " +
             "CASE WHEN i.userId IS NOT NULL THEN 1 ELSE 0 END AS isInterested " +

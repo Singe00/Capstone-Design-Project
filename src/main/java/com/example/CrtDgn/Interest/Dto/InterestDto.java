@@ -12,4 +12,5 @@ import lombok.Setter;
 public class InterestDto {
     private String email;
     private Long tourid;
+    private String token;
 }

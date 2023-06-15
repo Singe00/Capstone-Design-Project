@@ -9,6 +9,7 @@ import com.example.CrtDgn.Login.Repository.MemberRepository;
 import com.example.CrtDgn.Search.Domain.Search;
 import com.example.CrtDgn.Search.Domain.Search2;
 import com.example.CrtDgn.Search.Repository.SearchRepository;
+import com.example.CrtDgn.Security.Jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,15 @@ public class InterestService {
     @Autowired
     private final MemberRepository memberRepository;
 
+    @Autowired
+    private final JwtTokenProvider jwtTokenProvider;
+
 
     Interest interest = new Interest();
 
     public String addInterest(InterestDto request) {
-        Optional<Member> member = memberRepository.findByEmail(request.getEmail());
+        String plat = jwtTokenProvider.getPlatform(request.getToken());
+        Optional<Member> member = memberRepository.findByEmailAndPlatform(request.getEmail(),plat);
 
         if (interestRepository.findByUserIdAndTourkey(member.get().getId(),request.getTourid()).isPresent())
         {
@@ -55,7 +60,8 @@ public class InterestService {
     }
 
     public String deleteInterest(InterestDto request) {
-        Optional<Member> member = memberRepository.findByEmail(request.getEmail());
+        String plat = jwtTokenProvider.getPlatform(request.getToken());
+        Optional<Member> member = memberRepository.findByEmailAndPlatform(request.getEmail(),plat);
         Optional<Interest> inter = interestRepository.findByUserIdAndTourkey(member.get().getId(),request.getTourid());
 
         if (inter.isPresent())
@@ -68,13 +74,14 @@ public class InterestService {
         return "Fail";
     }
 
-    public List<Search2> returnInterest(String email) {
-        Member member = memberRepository.findMByEmail(email);
+    public List<Search2> returnInterest(InterestDto request) {
+        String plat = jwtTokenProvider.getPlatform(request.getToken());
+        Optional<Member> member = memberRepository.findByEmailAndPlatform(request.getEmail(),plat);
 
-        List<Long> tourKey = interestRepository.findAllByUserId(member.getId()).stream()
+        List<Long> tourKey = interestRepository.findAllByUserId(member.get().getId()).stream()
                 .map(Interest::getTourkey).toList();
 
-        List<Object[]> result = searchRepository.getTourWithInterestByTourIds(member.getId(), tourKey);
+        List<Object[]> result = searchRepository.getTourWithInterestByTourIds(member.get().getId(), tourKey);
         List<Search2> interestList = new ArrayList<>();
 
         for (Object[] row : result) {

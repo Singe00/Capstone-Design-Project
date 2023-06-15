@@ -22,5 +22,7 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
 
     @Query("SELECT m FROM Member m WHERE m.email = :email and m.platform = :platform")
     Member findMByEP(@Param("email") String email,@Param("platform") String platform);
+
+    Optional<Member> findByEmailAndPlatform(String email,String plat);
     boolean existsByEmail(String email);
 }
