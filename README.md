@@ -32,6 +32,10 @@
   - joblib : 1.2.0
   - scipy : 1.7.3
   - folium : 0.14.0
+<br/>
+
+> api 문서 링크
+  https://documenter.getpostman.com/view/20733307/2s93sXbZbJ
 
 <br/>
 
@@ -40,8 +44,7 @@
     <img src="https://github.com/Min-su-Jeong/Capstone_Design_Project/assets/74342121/0e06bb8c-49f0-4a6d-9efd-1090654b1ba7" width="460" height="400">
   </p>
 
-> api 문서 링크
-  https://documenter.getpostman.com/view/20733307/2s93sXbZbJ
+
 <br/>
 
 > 주요 기능
